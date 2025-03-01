@@ -3,19 +3,232 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --background: 180 30% 96%;
+  --foreground: 222.2 84% 4.9%;
 
+  --shadow-sm: hsla(240, 30%, 28%, 0.15) 0px 1px 2px 0px;
+  --shadow-md: hsla(240, 30%, 28%, 0.25) 0px 2px 5px -1px,
+    hsla(0, 0%, 0%, 0.3) 0px 1px 3px -1px;
+  --shadow-lg: hsla(240, 30%, 28%, 0.3) 0px 10px 15px -3px,
+    hsla(0, 0%, 0%, 0.15) 0px 4px 6px -2px;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+
+  --primary: 126 61% 24%;
+  --primary-foreground: 210 40% 98%;
+
+  --primary-dark: 126 61% 20%;
+  --primary-dark-foreground: 210 40% 98%;
+
+  --secondary: 211 11% 39%;
+  --secondary-foreground: 0 9% 90%;
+
+  --muted: 211 11% 39%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 126 61% 24%;
+
+  --link: 208 100% 38%;
+  --link-foreground: 208 100% 98%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+
+  --radius: 0.5rem;
+
+  scrollbar-color: #bbb hsl(var(--background));
+
+  --chart-1: 12 76% 61%;
+
+  --chart-2: 173 58% 39%;
+
+  --chart-3: 197 37% 24%;
+
+  --chart-4: 43 74% 66%;
+
+  --chart-5: 27 87% 67%;
+}
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 9%;
+    --foreground: 210 40% 98%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 142 76% 36%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --primary-dark: 142 76% 30%;
+    --primary-dark-foreground: 223 47% 9%;
+
+    --secondary: 214 8% 70%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 214 8% 70%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 0 0% 26%;
+    --accent-foreground: 210 40% 98%;
+
+    --link: 208 100% 38%;
+    --link-foreground: 208 100% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 0 0% 26%;
+    --input: 222 7% 80%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+/* @layer base {
+
+} */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* React toastify customization */
+  --toastify-toast-bd-radius: 2px;
+  --toastify-font-family: "Open Sans", sans-serif;
+}
+
+html {
+  font-size: 16px;
+
+  /* colors */
+  /* --primary: hsl(126, 61%, 24%);
+  --primary-dark: hsl(126, 61%, 20%); */
+  --gray-0: #fff;
+  --gray-1: #f2f2f2;
+  --gray-2: #f2f8f8;
+  --gray-3: #f1f1f1;
+  --gray-4: #e5e7eb;
+  --gray-5: #c1c5cb;
+  --gray-6: #333;
+
+  --gutter-x: 4rem;
+  --app-bg: #f2f8f8;
+  --box-bs: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  --box-bs: rgba(0, 0, 0, 0.133) 0px 1.6px 3.6px 0px,
+    rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px;
+  --text-muted: rgb(108, 117, 125);
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    --gutter-x: 2rem;
   }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", serif;
+}
+
+.link {
+  position: relative;
+  color: hsl(var(--link));
+  text-decoration: none;
+}
+.link:hover {
+  border-bottom: 1px solid hsl(var(--link));
+}
+
+.container {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding-left: calc(0.5 * var(--gutter-x));
+  padding-right: calc(0.5 * var(--gutter-x));
+}
+
+.__page-content {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.__input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+select option {
+  background-color: hsl(var(--background));
+}
+
+.form {
+  max-width: 600px;
+}
+
+/* button.primary {
+  background-color: var(--primary);
+  border: #18621f;
+  color: #fff;
+}
+button.primary:active {
+  background-color: #0f4d1a;
+} */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Libre Baskerville", serif;
+}
+
+hr {
+  margin: 1rem 0;
+  color: inherit;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  opacity: 0.95;
+}
+
+.btn {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  text-decoration: none;
 }
