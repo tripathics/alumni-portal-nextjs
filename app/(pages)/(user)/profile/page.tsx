@@ -33,7 +33,7 @@ import AvatarUpload from "@/components/forms/AvatarUpload";
 import axios from "axios";
 import updateAvatarNew from "@/lib/actions/profile/updateAvatarNew";
 import getUploadUrlApi from "@/lib/actions/media/getUploadUrl";
-import { useSessionApi } from "@/state/session";
+import { useSession, useSessionApi } from "@/state/session";
 
 interface PersonalDetailsFormProps {
   prefillData: FieldValues;
@@ -60,13 +60,14 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({
 const Page = () => {
   const queryClient = useQueryClient();
   const { fetchProfileCompletionStatus, fetchUser } = useSessionApi();
+  const { user } = useSession();
 
   const profileQuery = useQuery({
     queryFn: async () => {
       const data = await readProfile();
       return data?.user;
     },
-    queryKey: [queryKey.profile],
+    queryKey: [user?.id, queryKey.profile],
   });
 
   const profile = profileQuery.data || null;
@@ -77,7 +78,7 @@ const Page = () => {
   const updateProfileMutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
+      queryClient.invalidateQueries({ queryKey: [user?.id, queryKey.profile] });
       fetchProfileCompletionStatus();
       fetchUser(undefined, true);
     },
@@ -107,7 +108,7 @@ const Page = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
+      queryClient.invalidateQueries({ queryKey: [user?.id, queryKey.profile] });
       fetchProfileCompletionStatus();
       fetchUser(undefined, true);
       setUpdateAvatarModalOpen(false);
@@ -178,9 +179,9 @@ const Page = () => {
                       aria-label="Edit profile picture"
                       variant="outline"
                       size="icon"
-                      className="rounded-full p-2"
+                      className="rounded-full md:h-9 md:w-9 w-8 h-8 "
                     >
-                      <PencilIcon />
+                      <PencilIcon className="w-4" />
                     </Button>
                   </DialogTrigger>
                   <DialogContent>

@@ -7,13 +7,15 @@ import { UserDetailsForMembership } from "./UserDetailsForMembership";
 import alumniPrefill from "@/lib/actions/alumni/alumniPrefill";
 import { LoaderCircle } from "lucide-react";
 import { queryKey } from "@/lib/constants/queryKey";
+import { useSession } from "@/state/session";
 
 export const AlumniForm: React.FC<{
   ref: React.Ref<{ submit: () => void }>;
 }> = ({ ref }) => {
+  const { user } = useSession();
   const alumniPrefillDataQuery = useQuery({
     queryFn: alumniPrefill,
-    queryKey: [queryKey.alumniPrefill],
+    queryKey: [user?.id, queryKey.alumniPrefill],
   });
 
   const membershipSubmitMutation = useMutation({

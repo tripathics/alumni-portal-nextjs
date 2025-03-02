@@ -24,7 +24,7 @@ export type SessionApiContext = {
     reset: () => void;
   };
   logout: (
-    params: void,
+    params?: void,
     optimistic?: boolean
   ) => Promise<
     | {

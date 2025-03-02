@@ -8,11 +8,13 @@ import { EducationType } from "@/types/Profile.type";
 import { queryKey } from "@/lib/constants/queryKey";
 import fetchNitapEducation from "@/lib/actions/profile/education/fetchNitapEducation";
 import { LoaderCircle } from "lucide-react";
+import { useSession } from "@/state/session";
 
 interface EducationFormProps {
   ref: React.Ref<{ submit: () => void }>;
 }
 export const EducationForm: React.FC<EducationFormProps> = ({ ref }) => {
+  const { user } = useSession();
   const [prefillData, setPrefillData] = React.useState<EducationType | null>(
     null
   );
@@ -20,7 +22,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ ref }) => {
   const queryClient = useQueryClient();
 
   const educationAtNitapQuery = useQuery({
-    queryKey: [queryKey.nitapEducation],
+    queryKey: [user?.id, queryKey.nitapEducation],
     queryFn: async () => {
       const data = await fetchNitapEducation();
       return data?.educationRecords;
@@ -35,7 +37,9 @@ export const EducationForm: React.FC<EducationFormProps> = ({ ref }) => {
   const updateEducationMutation = useMutation({
     mutationFn: updateEducation,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey.nitapEducation] });
+      queryClient.invalidateQueries({
+        queryKey: [user?.id, queryKey.nitapEducation],
+      });
     },
   });
 

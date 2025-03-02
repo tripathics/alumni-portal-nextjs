@@ -10,6 +10,7 @@ import { UserType } from "@/types/User.type";
 import eventEmitter from "@/config/eventEmitter.config";
 import { usePathname, useRouter } from "next/navigation";
 import useAction from "@/hooks/useAction";
+import { useQueryClient } from "@tanstack/react-query";
 
 const SessionApi = React.createContext<SessionApiContext>({
   login: {
@@ -37,14 +38,22 @@ const SessionState = React.createContext<SessionStateContext>({
 });
 
 const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
+  const queryClient = useQueryClient();
   const [user, setUser] = React.useState<UserType | null>(null);
 
-  const { data: profileCompletionStatus, exec: fetchProfileCompletionStatus } =
-    useAction({
-      apiAction: fetchProfileCompletionStatusApi,
-    });
+  const {
+    data: profileCompletionStatus,
+    exec: fetchProfileCompletionStatus,
+    reset: resetProfileCompletionStatus,
+  } = useAction({
+    apiAction: fetchProfileCompletionStatusApi,
+  });
 
-  const { exec: fetchUser, loading: isfetchUserLoading } = useAction({
+  const {
+    exec: fetchUser,
+    loading: isfetchUserLoading,
+    reset: resetFetchUser,
+  } = useAction({
     apiAction: fetchUserApi,
     execOnMount: true,
     onSuccess: (data) => {
@@ -76,8 +85,21 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
     },
   });
 
+  const clearUser = React.useCallback(() => {
+    setUser(null);
+    resetFetchUser();
+    resetProfileCompletionStatus();
+    loginAction.reset();
+  }, [setUser, resetFetchUser, resetProfileCompletionStatus, loginAction]);
+
   const logoutAction = useAction({
-    apiAction: logoutApi,
+    apiAction: async () => {
+      queryClient.removeQueries({
+        queryKey: [user?.id],
+        exact: false,
+      });
+      return await logoutApi();
+    },
     onSuccess() {
       toast.dismiss();
       toast.info("Logged out", {
@@ -90,11 +112,9 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
       toast.error(error.message);
     },
     onSettled() {
-      setUser(null);
+      clearUser();
     },
   });
-
-  const logout = logoutAction.exec;
 
   const isUserLoading =
     isfetchUserLoading || loginAction.loading || logoutAction.loading;
@@ -102,11 +122,11 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
   const api: SessionApiContext = React.useMemo(
     () => ({
       login: loginAction,
-      logout,
+      logout: logoutAction.exec,
       fetchUser,
       fetchProfileCompletionStatus,
     }),
-    [loginAction, logout, fetchProfileCompletionStatus, fetchUser]
+    [loginAction, logoutAction.exec, fetchProfileCompletionStatus, fetchUser]
   );
 
   const router = useRouter();
@@ -115,7 +135,7 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
   React.useEffect(() => {
     eventEmitter.on("unauthorized", () => {
       if (user) {
-        setUser(null);
+        clearUser();
         toast.error("Session expired.");
         router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       }
@@ -123,7 +143,7 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
     return () => {
       eventEmitter.off("unauthorized");
     };
-  }, [user, router, pathname]);
+  }, [user, router, pathname, clearUser]);
 
   const state: SessionStateContext = {
     user,

@@ -143,14 +143,16 @@ const Education: React.FC = () => {
   const queryClient = useQueryClient();
 
   const educationQuery = useQuery({
-    queryKey: [queryKey.education],
+    queryKey: [user?.id, queryKey.education],
     queryFn: fetchEducationApi,
   });
 
   const educationMutation = useMutation({
     mutationFn: updateEducationApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey.education] });
+      queryClient.invalidateQueries({
+        queryKey: [user?.id, queryKey.education],
+      });
       fetchProfileCompletionStatus();
       toast.success("Educations updated");
       setIsModalOpen(false);

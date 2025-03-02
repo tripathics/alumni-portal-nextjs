@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKey } from "@/lib/constants/queryKey";
+import { useSession } from "@/state/session";
 
 interface ExperienceFormProps {
   onSubmit: (data: FieldValues) => void;
@@ -103,16 +104,19 @@ const ExperienceRow: React.FC<ExperienceRowProps> = ({
 
 const Experience: React.FC = () => {
   const queryClient = useQueryClient();
+  const { user } = useSession();
 
   const experienceQuery = useQuery({
-    queryKey: [queryKey.experience],
+    queryKey: [user?.id, queryKey.experience],
     queryFn: fetchExperiencesApi,
   });
 
   const experienceMutation = useMutation({
     mutationFn: updateExperience,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey.experience] });
+      queryClient.invalidateQueries({
+        queryKey: [user?.id, queryKey.experience],
+      });
       toast.success("Experiences updated");
     },
   });
