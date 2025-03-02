@@ -33,6 +33,7 @@ import AvatarUpload from "@/components/forms/AvatarUpload";
 import axios from "axios";
 import updateAvatarNew from "@/lib/actions/profile/updateAvatarNew";
 import getUploadUrlApi from "@/lib/actions/media/getUploadUrl";
+import { useSessionApi } from "@/state/session";
 
 interface PersonalDetailsFormProps {
   prefillData: FieldValues;
@@ -58,6 +59,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({
 
 const Page = () => {
   const queryClient = useQueryClient();
+  const { fetchProfileCompletionStatus, fetchUser } = useSessionApi();
 
   const profileQuery = useQuery({
     queryFn: async () => {
@@ -76,7 +78,8 @@ const Page = () => {
     mutationFn: updateProfile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
-      queryClient.invalidateQueries({ queryKey: [queryKey.user] });
+      fetchProfileCompletionStatus();
+      fetchUser(undefined, true);
     },
   });
 
@@ -105,7 +108,8 @@ const Page = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
-      queryClient.invalidateQueries({ queryKey: [queryKey.user] });
+      fetchProfileCompletionStatus();
+      fetchUser(undefined, true);
       setUpdateAvatarModalOpen(false);
     },
   });

@@ -1,30 +1,50 @@
 import { ProfileCompletionStatusType, UserType } from "@/types/User.type";
-import { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 export type SessionApiContext = {
   login: {
-    error: Error | null;
-    isPending: boolean;
-    reset: () => void;
-    status: string;
-    mutateAsync: UseMutateAsyncFunction<
+    data:
       | {
           success: boolean;
           message: string;
           user?: UserType;
         }
-      | undefined,
-      Error,
-      {
+      | null
+      | undefined;
+    loading: boolean;
+    error: Error | null;
+    exec: (
+      params: {
         email: string;
         password: string;
       },
-      unknown
+      optimistic?: boolean
+    ) => Promise<
+      { success: boolean; message: string; user?: UserType } | undefined
     >;
+    reset: () => void;
   };
-  logout: () => void;
-  fetchUser: () => void;
-  fetchProfileCompletionStatus: () => void;
+  logout: (
+    params: void,
+    optimistic?: boolean
+  ) => Promise<
+    | {
+        message: string;
+        success: boolean;
+      }
+    | undefined
+  >;
+  fetchUser: (
+    params?: true | undefined,
+    optimistic?: boolean
+  ) => Promise<{
+    success: boolean;
+    message: string;
+    user?: UserType;
+  } | null>;
+  fetchProfileCompletionStatus: (
+    params: void,
+    optimistic?: boolean
+  ) => Promise<ProfileCompletionStatusType | undefined>;
 };
 
 export type SessionStateContext = {

@@ -50,7 +50,7 @@ export const PageTitle: React.FC<{
   };
 
   return (
-    <h1 className={cx("font-serif font-semibold", variantStyles[variant])}>
+    <h1 className={cx("font-serif font-medium", variantStyles[variant])}>
       {title}
     </h1>
   );

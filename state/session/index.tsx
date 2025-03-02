@@ -6,23 +6,28 @@ import fetchUserApi from "@/lib/actions/profile/fetchUser";
 import fetchProfileCompletionStatusApi from "@/lib/actions/profile/fetchProfileCompletionStatus";
 import { SessionApiContext, SessionStateContext } from "./types";
 import { toast } from "react-toastify";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserType } from "@/types/User.type";
-import { queryKey } from "@/lib/constants/queryKey";
 import eventEmitter from "@/config/eventEmitter.config";
 import { usePathname, useRouter } from "next/navigation";
+import useAction from "@/hooks/useAction";
 
 const SessionApi = React.createContext<SessionApiContext>({
   login: {
+    data: null,
+    loading: false,
     error: null,
-    isPending: false,
+    exec: () =>
+      new Promise((resolve, reject) => reject("Login is not implemented")),
     reset: () => {},
-    status: "idle",
-    mutateAsync: async () => undefined,
   },
-  logout: () => {},
-  fetchUser: () => {},
-  fetchProfileCompletionStatus: () => {},
+  logout: () =>
+    new Promise((resolve, reject) => reject("logout is not implemented")),
+  fetchUser: () =>
+    new Promise((resolve, reject) => reject("fetchUser is not implemented")),
+  fetchProfileCompletionStatus: () =>
+    new Promise((resolve, reject) =>
+      reject("fetchProfileCompletionStatus is not implemented")
+    ),
 });
 
 const SessionState = React.createContext<SessionStateContext>({
@@ -31,34 +36,30 @@ const SessionState = React.createContext<SessionStateContext>({
   profileCompletionStatus: null,
 });
 
-const Provider = ({ children }: React.PropsWithChildren<object>) => {
-  const queryClient = useQueryClient();
+const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
   const [user, setUser] = React.useState<UserType | null>(null);
 
-  const { data: fetchUserData, isFetching: isfetchUserLoading } = useQuery({
-    queryKey: [queryKey.user],
-    queryFn: fetchUserApi,
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
+  const { data: profileCompletionStatus, exec: fetchProfileCompletionStatus } =
+    useAction({
+      apiAction: fetchProfileCompletionStatusApi,
+    });
 
-  React.useEffect(() => {
-    console.log("fetchUserData from session state");
-    if (fetchUserData?.user) setUser(fetchUserData.user);
-  }, [fetchUserData]);
-
-  const { data: profileCompletionStatus } = useQuery({
-    enabled: !!user,
-    queryFn: fetchProfileCompletionStatusApi,
-    queryKey: [queryKey.profileCompletionStatus],
-    retry: false,
-  });
-
-  const loginMutation = useMutation({
-    mutationFn: loginApi,
+  const { exec: fetchUser, loading: isfetchUserLoading } = useAction({
+    apiAction: fetchUserApi,
+    execOnMount: true,
     onSuccess: (data) => {
       if (data?.user) {
-        queryClient.invalidateQueries({ queryKey: [queryKey.user] });
+        console.log("fetched user");
+        setUser(data.user);
+      }
+      fetchProfileCompletionStatus();
+    },
+  });
+
+  const loginAction = useAction({
+    apiAction: loginApi,
+    onSuccess: (data) => {
+      if (data?.user) {
         setUser(data.user);
         const first_name = data.user.first_name;
         toast.dismiss();
@@ -70,30 +71,14 @@ const Provider = ({ children }: React.PropsWithChildren<object>) => {
             closeOnClick: true,
           }
         );
-        [queryKey.profile, queryKey.profileCompletionStatus].forEach((key) => {
-          queryClient.invalidateQueries({
-            queryKey: [key],
-          });
-        });
+        fetchProfileCompletionStatus();
       }
     },
   });
 
-  const clearUser = React.useCallback(() => {
-    setUser(null);
-    const queryKeys = [
-      queryKey.user,
-      queryKey.profile,
-      queryKey.profileCompletionStatus,
-    ];
-    queryKeys.forEach((key) => {
-      queryClient.removeQueries({ queryKey: [`${key}`] });
-    });
-  }, [queryClient]);
-
-  const logoutMutation = useMutation({
-    mutationFn: logoutApi,
-    onSuccess: () => {
+  const logoutAction = useAction({
+    apiAction: logoutApi,
+    onSuccess() {
       toast.dismiss();
       toast.info("Logged out", {
         autoClose: 2000,
@@ -101,40 +86,28 @@ const Provider = ({ children }: React.PropsWithChildren<object>) => {
         closeOnClick: true,
       });
     },
-    onError: (error) => {
+    onError(error) {
       toast.error(error.message);
     },
-    onSettled: () => {
-      clearUser();
+    onSettled() {
+      setUser(null);
     },
   });
 
-  const fetchUser = React.useCallback(() => {
-    queryClient.invalidateQueries({ queryKey: [queryKey.user] });
-  }, [queryClient]);
-
-  const fetchProfileCompletionStatus = React.useCallback(() => {
-    queryClient.invalidateQueries({
-      queryKey: [queryKey.profileCompletionStatus],
-    });
-  }, [queryClient]);
-
-  const logout = React.useCallback(() => {
-    logoutMutation.mutate();
-  }, [logoutMutation]);
+  const logout = logoutAction.exec;
 
   const isUserLoading =
-    isfetchUserLoading || loginMutation.isPending || logoutMutation.isPending;
+    isfetchUserLoading || loginAction.loading || logoutAction.loading;
 
-  const api: SessionApiContext = React.useMemo(() => {
-    const { mutateAsync, error, isPending, status, reset } = loginMutation;
-    return {
-      login: { mutateAsync, error, isPending, status, reset },
+  const api: SessionApiContext = React.useMemo(
+    () => ({
+      login: loginAction,
       logout,
       fetchUser,
       fetchProfileCompletionStatus,
-    };
-  }, [loginMutation, logout, fetchUser, fetchProfileCompletionStatus]);
+    }),
+    [loginAction, logout, fetchProfileCompletionStatus, fetchUser]
+  );
 
   const router = useRouter();
   const pathname = usePathname();
@@ -142,7 +115,7 @@ const Provider = ({ children }: React.PropsWithChildren<object>) => {
   React.useEffect(() => {
     eventEmitter.on("unauthorized", () => {
       if (user) {
-        clearUser();
+        setUser(null);
         toast.error("Session expired.");
         router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       }
@@ -150,7 +123,7 @@ const Provider = ({ children }: React.PropsWithChildren<object>) => {
     return () => {
       eventEmitter.off("unauthorized");
     };
-  }, [user, clearUser, router, pathname]);
+  }, [user, router, pathname]);
 
   const state: SessionStateContext = {
     user,
@@ -181,4 +154,4 @@ const useSessionApi = () => {
   return context;
 };
 
-export { useSession, useSessionApi, Provider as SessionContextProvider };
+export { useSession, useSessionApi, SessionProvider as SessionContextProvider };

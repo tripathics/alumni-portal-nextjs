@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
   const [profileMenuOpen, setProfileMenuOpen] = React.useState(false);
 
   return (
-    <nav className="bg-background md:bg-background/80 md:backdrop-blur-xl sticky top-0 z-50 border-b border-muted-foreground/20">
+    <nav className="bg-background md:bg-background/75 md:backdrop-blur-xl sticky top-0 z-50 border-b border-muted-foreground/20">
       <div className="container flex justify-between transition-all h-20">
         {/* logo */}
         <div className="flex items-center">

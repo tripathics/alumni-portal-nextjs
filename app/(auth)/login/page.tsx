@@ -24,9 +24,7 @@ const Login = () => {
   const { login } = useSessionApi();
 
   const onSubmit = async (data: FieldValues) => {
-    const res = await login.mutateAsync(
-      data as { email: string; password: string }
-    );
+    const res = await login.exec(data as { email: string; password: string });
     if (!!searchParams.get("redirect")) {
       const redirectUrl = searchParams.get("redirect");
       if (redirectUrl) {
@@ -82,8 +80,8 @@ const Login = () => {
                 error={errors["password"]}
               />
               <div className="w-full flex *:grow">
-                <Button loading={login.isPending} type="submit">
-                  {login.isPending ? "Signing in" : "Sign in"}
+                <Button loading={login.loading} type="submit">
+                  {login.loading ? "Signing in" : "Sign in"}
                 </Button>
               </div>
             </form>

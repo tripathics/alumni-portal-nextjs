@@ -8,12 +8,14 @@ import { LoaderCircle } from "lucide-react";
 import updateProfile from "@/lib/actions/profile/updateProfile";
 import { PersonalDetailsType } from "@/types/Profile.type";
 import { queryKey } from "@/lib/constants/queryKey";
+import { useSessionApi } from "@/state/session";
 
 export const PersonalDetailsForm: React.FC<{
   ref: Ref<{ submit: () => void }>;
   selectedAvatarFile?: File;
 }> = ({ ref, selectedAvatarFile }) => {
   const queryClient = useQueryClient();
+  const { fetchUser } = useSessionApi();
 
   const profileQuery = useQuery({
     queryFn: async () => {
@@ -27,7 +29,7 @@ export const PersonalDetailsForm: React.FC<{
     mutationFn: updateProfile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
-      queryClient.invalidateQueries({ queryKey: [queryKey.user] });
+      fetchUser(undefined, true);
     },
   });
 
