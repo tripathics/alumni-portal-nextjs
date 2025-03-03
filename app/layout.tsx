@@ -3,8 +3,8 @@ import { Open_Sans, Libre_Baskerville, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import cx from "classnames";
 import { SessionContextProvider } from "@/state/session";
-import { QueryProvider } from "@/state/query.config";
-import { Toast } from "@/state/session/toast.config";
+import { QueryProvider } from "@/config/query.config";
+import { Toast } from "@/config/toast.config";
 
 const openSans = Open_Sans({
   display: "swap",

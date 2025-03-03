@@ -57,12 +57,10 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
     apiAction: fetchUserApi,
     execOnMount: true,
     onSuccess: (data) => {
-      if (data?.user) {
-        console.log("fetched user");
-        setUser(data.user);
-      }
+      if (data?.user) setUser(data.user);
       fetchProfileCompletionStatus();
     },
+    onError: () => {},
   });
 
   const loginAction = useAction({
@@ -86,21 +84,25 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
   });
 
   const clearUser = React.useCallback(() => {
+    queryClient.clear();
     setUser(null);
     resetFetchUser();
     resetProfileCompletionStatus();
     loginAction.reset();
-  }, [setUser, resetFetchUser, resetProfileCompletionStatus, loginAction]);
+  }, [
+    setUser,
+    resetFetchUser,
+    resetProfileCompletionStatus,
+    loginAction,
+    queryClient,
+  ]);
 
   const logoutAction = useAction({
     apiAction: async () => {
-      queryClient.removeQueries({
-        queryKey: [user?.id],
-        exact: false,
-      });
       return await logoutApi();
     },
-    onSuccess() {
+    onSettled() {
+      clearUser();
       toast.dismiss();
       toast.info("Logged out", {
         autoClose: 2000,
@@ -110,9 +112,6 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
     },
     onError(error) {
       toast.error(error.message);
-    },
-    onSettled() {
-      clearUser();
     },
   });
 

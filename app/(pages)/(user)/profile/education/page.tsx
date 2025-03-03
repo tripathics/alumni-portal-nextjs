@@ -143,7 +143,7 @@ const Education: React.FC = () => {
   const queryClient = useQueryClient();
 
   const educationQuery = useQuery({
-    queryKey: [user?.id, queryKey.education],
+    queryKey: [queryKey.education],
     queryFn: fetchEducationApi,
   });
 
@@ -151,7 +151,7 @@ const Education: React.FC = () => {
     mutationFn: updateEducationApi,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [user?.id, queryKey.education],
+        queryKey: [queryKey.education],
       });
       fetchProfileCompletionStatus();
       toast.success("Educations updated");

@@ -98,8 +98,8 @@ export const ProfileMenu: React.FC<{
                   <button
                     onClick={() => {
                       logout();
-                      onOpenChange(false);
                       router.replace("/");
+                      onOpenChange(false);
                     }}
                     className="text-foreground/80 px-3 py-2 flex flex-row gap-2 items-center w-full text-sm hover:bg-accent rounded-full"
                   >

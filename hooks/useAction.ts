@@ -28,7 +28,7 @@ function useAction<T, P = void>({
   }, [onSuccess, onError, onSettled]);
 
   const exec = React.useCallback(
-    async (params?: P, optimistic = false): Promise<T> => {
+    async (params?: P, optimistic = false): Promise<T | null> => {
       setError(null);
       setLoading(optimistic ? false : true);
       try {
@@ -39,11 +39,12 @@ function useAction<T, P = void>({
       } catch (error) {
         setError(error as Error);
         if (onErrorRef.current) onErrorRef.current(error as Error);
-        throw error;
+        else throw error;
       } finally {
         if (onSettledRef.current) onSettledRef.current();
         setLoading(false);
       }
+      return null;
     },
     [apiAction]
   );

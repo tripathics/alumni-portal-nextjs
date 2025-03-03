@@ -29,7 +29,6 @@ import {
 import readProfile from "@/lib/actions/profile/readProfile";
 import { queryKey } from "@/lib/constants/queryKey";
 import AvatarUpload from "@/components/forms/AvatarUpload";
-// import axiosInstance from "@/config/axios/client.config";
 import axios from "axios";
 import updateAvatarNew from "@/lib/actions/profile/updateAvatarNew";
 import getUploadUrlApi from "@/lib/actions/media/getUploadUrl";
@@ -64,10 +63,12 @@ const Page = () => {
 
   const profileQuery = useQuery({
     queryFn: async () => {
+      if (!user) return null;
       const data = await readProfile();
       return data?.user;
     },
-    queryKey: [user?.id, queryKey.profile],
+    queryKey: [queryKey.profile],
+    enabled: !!user,
   });
 
   const profile = profileQuery.data || null;
@@ -78,7 +79,7 @@ const Page = () => {
   const updateProfileMutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [user?.id, queryKey.profile] });
+      queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
       fetchProfileCompletionStatus();
       fetchUser(undefined, true);
     },
@@ -108,7 +109,7 @@ const Page = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [user?.id, queryKey.profile] });
+      queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
       fetchProfileCompletionStatus();
       fetchUser(undefined, true);
       setUpdateAvatarModalOpen(false);

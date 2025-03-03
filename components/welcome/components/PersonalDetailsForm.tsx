@@ -23,13 +23,13 @@ export const PersonalDetailsForm: React.FC<{
       const data = await readProfile();
       return data?.user;
     },
-    queryKey: [user?.id, queryKey.profile],
+    queryKey: [queryKey.profile],
   });
 
   const updateProfileMutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [user?.id, queryKey.profile] });
+      queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
       fetchUser(undefined, true);
     },
   });

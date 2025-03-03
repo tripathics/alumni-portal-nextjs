@@ -36,7 +36,7 @@ export const columns: ColumnDef<MembershipApplication>[] = [
     accessorKey: "applicant",
     header: "Applicant",
     cell: (cell) => (
-      <div className="flex items-center">
+      <div className="flex items-start">
         <Avatar avatar={cell.row.original.avatar} size="2rem" />
         <div className="flex flex-col ml-2">
           <span>{cell.row.original.name}</span>

@@ -12,7 +12,7 @@ const fetchUser = async (): Promise<{
       method: "GET",
       url: "/api/users/u",
     });
-    return response?.data || null;
+    return response?.data;
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.response?.data.message) {

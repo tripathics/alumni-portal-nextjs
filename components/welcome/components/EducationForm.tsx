@@ -22,7 +22,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ ref }) => {
   const queryClient = useQueryClient();
 
   const educationAtNitapQuery = useQuery({
-    queryKey: [user?.id, queryKey.nitapEducation],
+    queryKey: [queryKey.nitapEducation],
     queryFn: async () => {
       const data = await fetchNitapEducation();
       return data?.educationRecords;
@@ -38,7 +38,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ ref }) => {
     mutationFn: updateEducation,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [user?.id, queryKey.nitapEducation],
+        queryKey: [queryKey.nitapEducation],
       });
     },
   });

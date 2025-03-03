@@ -24,6 +24,9 @@ export default {
       },
     },
     extend: {
+      spacing: {
+        "50": "200px",
+      },
       clipPath: {
         rect: "polygon(0 0,100% 0,100% 100%,0 100%)",
         "h-line": "polygon(0 0,100% 0,100% 0,0 0)",

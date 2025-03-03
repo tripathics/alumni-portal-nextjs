@@ -47,11 +47,12 @@ export const AvatarUpload: React.FC<{
     <main className="flex flex-col">
       <form className="flex flex-col w-full items-center gap-8">
         <div className="relative mb-4 w-fit">
-          <div className="relative rounded-full bg-card border border-muted/20 w-52 h-52 overflow-hidden flex items-center justify-center">
+          <div className="relative rounded-full bg-card border border-muted/20 w-50 h-50 overflow-hidden flex items-center justify-center">
             {fileUrl ? (
               <Image
-                fill
-                className="object-cover object-center"
+                width={200}
+                height={200}
+                className="w-full h-full object-cover object-center"
                 src={fileUrl}
                 alt="Avatar"
               />
@@ -73,10 +74,8 @@ export const AvatarUpload: React.FC<{
                   "File size should be less than 2MB",
                 acceptedFormats: (file?: File | null) =>
                   !file ||
-                  ["image/jpeg", "image/png", "image/webp"].includes(
-                    file?.type
-                  ) ||
-                  "Only JPEG, PNG or WEBP files are allowed",
+                  ["image/jpeg"].includes(file?.type) ||
+                  "Only JPEG files are allowed",
               },
             }}
             render={({ field }) => (

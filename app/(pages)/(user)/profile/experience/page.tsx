@@ -107,7 +107,7 @@ const Experience: React.FC = () => {
   const { user } = useSession();
 
   const experienceQuery = useQuery({
-    queryKey: [user?.id, queryKey.experience],
+    queryKey: [queryKey.experience],
     queryFn: fetchExperiencesApi,
   });
 
@@ -115,7 +115,7 @@ const Experience: React.FC = () => {
     mutationFn: updateExperience,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [user?.id, queryKey.experience],
+        queryKey: [queryKey.experience],
       });
       toast.success("Experiences updated");
     },

@@ -2,14 +2,11 @@ import { ProfileCompletionStatusType, UserType } from "@/types/User.type";
 
 export type SessionApiContext = {
   login: {
-    data:
-      | {
-          success: boolean;
-          message: string;
-          user?: UserType;
-        }
-      | null
-      | undefined;
+    data: {
+      success: boolean;
+      message: string;
+      user?: UserType;
+    } | null;
     loading: boolean;
     error: Error | null;
     exec: (
@@ -18,21 +15,16 @@ export type SessionApiContext = {
         password: string;
       },
       optimistic?: boolean
-    ) => Promise<
-      { success: boolean; message: string; user?: UserType } | undefined
-    >;
+    ) => Promise<{ success: boolean; message: string; user?: UserType } | null>;
     reset: () => void;
   };
   logout: (
     params?: void,
     optimistic?: boolean
-  ) => Promise<
-    | {
-        message: string;
-        success: boolean;
-      }
-    | undefined
-  >;
+  ) => Promise<{
+    message: string;
+    success: boolean;
+  } | null>;
   fetchUser: (
     params?: true | undefined,
     optimistic?: boolean
@@ -44,7 +36,7 @@ export type SessionApiContext = {
   fetchProfileCompletionStatus: (
     params: void,
     optimistic?: boolean
-  ) => Promise<ProfileCompletionStatusType | undefined>;
+  ) => Promise<ProfileCompletionStatusType | null>;
 };
 
 export type SessionStateContext = {

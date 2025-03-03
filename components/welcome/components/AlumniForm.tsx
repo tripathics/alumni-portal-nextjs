@@ -15,7 +15,7 @@ export const AlumniForm: React.FC<{
   const { user } = useSession();
   const alumniPrefillDataQuery = useQuery({
     queryFn: alumniPrefill,
-    queryKey: [user?.id, queryKey.alumniPrefill],
+    queryKey: [queryKey.alumniPrefill],
   });
 
   const membershipSubmitMutation = useMutation({

@@ -5,14 +5,11 @@ import axios from "@/config/axios/client.config";
 const login = async (loginFormData: {
   email: string;
   password: string;
-}): Promise<
-  | {
-      success: boolean;
-      message: string;
-      user?: UserType;
-    }
-  | undefined
-> => {
+}): Promise<{
+  success: boolean;
+  message: string;
+  user?: UserType;
+} | null> => {
   try {
     const response = await axios.request({
       method: "POST",
