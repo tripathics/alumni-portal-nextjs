@@ -11,9 +11,9 @@ export default function Layout({
   return (
     <>
       <PageHeader
-        bgImage="/header-bg/2023-04-09.jpg"
-        pageHeading="Profile"
-        subHeading="Your profile here"
+        bgImage="/header-bg/2022-01-03.jpg"
+        pageHeading="Admin"
+        subHeading="Welcome to the admin console"
       />
       <div className="__page-content container">
         <Dashboard>

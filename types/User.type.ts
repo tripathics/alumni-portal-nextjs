@@ -12,6 +12,8 @@ export interface UserType {
   last_name?: string | null;
   avatar: string;
   profile_locked: boolean | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ProfileCompletionStatusType {

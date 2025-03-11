@@ -21,7 +21,7 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ title, links }) => (
   <nav>
     <div className="mb-2">
-      <h2 className="text-xs font-bold">{title}</h2>
+      <h2 className="text-xs font-bold font-sans text-muted px-4">{title}</h2>
     </div>
     <ul className="mb-8">
       {links.map((link, index) => (

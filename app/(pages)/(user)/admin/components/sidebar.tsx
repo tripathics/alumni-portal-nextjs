@@ -2,7 +2,6 @@
 import Navigation from "@/components/custom-ui/Dashboard/Navigation";
 import {
   Database,
-  Globe,
   LayoutDashboard,
   NotepadText,
   UserRoundCheck,
@@ -37,16 +36,6 @@ export const Sidebar: React.FC = () => {
       links: [
         { name: "Users", path: `/admin/` + "users", Icon: UsersRound },
         { name: "Roles", path: `/admin/` + "roles", Icon: UserRoundCheck },
-      ],
-    },
-    {
-      title: "Content Management",
-      links: [
-        {
-          name: "Website content",
-          path: `/admin/` + "website-content",
-          Icon: Globe,
-        },
       ],
     },
   ];

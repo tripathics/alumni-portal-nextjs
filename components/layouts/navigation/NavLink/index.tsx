@@ -33,7 +33,7 @@ const NavLink: React.FC<{
   };
 
   const textStyles = {
-    link: "uppercase font-semibold text-sm",
+    link: "px-1 uppercase font-semibold text-sm",
     button: "text-xs leading-none block",
     mobileLink: "text-6xl font-semibold uppercase",
   };

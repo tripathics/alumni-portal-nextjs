@@ -3,6 +3,7 @@ import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import Label from "../../ui/label";
 import { Input, InputError } from "@/components/ui/input";
 import FieldWrapper from "../FieldWrapper";
+import { LucideIcon } from "lucide-react";
 
 export interface TextFieldProps {
   pattern?: string;
@@ -15,14 +16,13 @@ export interface TextFieldProps {
   error?: FieldError | Merge<FieldError, FieldErrorsImpl>;
   required?: boolean | string;
   disabled?: boolean;
-  Icon?: React.ForwardRefExoticComponent<
-    Omit<React.SVGProps<SVGSVGElement>, "ref"> &
-      React.RefAttributes<SVGSVGElement>
-  >;
+  Icon?: LucideIcon;
 }
 
 const TextField: React.ForwardRefExoticComponent<
-  TextFieldProps & React.RefAttributes<HTMLInputElement>
+  TextFieldProps &
+    React.RefAttributes<HTMLInputElement> &
+    React.ComponentProps<"input">
 > = forwardRef(
   (
     {
@@ -36,13 +36,16 @@ const TextField: React.ForwardRefExoticComponent<
       error,
       required = false,
       disabled = false,
-      // Icon,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      Icon,
+      ...inputProps
     },
     ref
   ) => {
     return (
       <FieldWrapper>
         <Label label={label} required={!!required} filled={!!value}>
+          {/* {Icon && <Icon />} */}
           <Input
             name={name}
             id={name}
@@ -53,6 +56,7 @@ const TextField: React.ForwardRefExoticComponent<
             disabled={disabled}
             ref={ref}
             error={error}
+            {...inputProps}
           />
         </Label>
         {error?.message && <InputError>{error.message as string}</InputError>}

@@ -1,9 +1,13 @@
+import { ValidationRule } from "react-hook-form";
+
 interface TextField {
   type: "text" | "email" | "password";
   name: string;
   label: string;
   disabled?: boolean;
   required?: boolean | string;
+  pattern?: ValidationRule<RegExp>;
+  autocomplete?: string;
 }
 
 interface SelectField {

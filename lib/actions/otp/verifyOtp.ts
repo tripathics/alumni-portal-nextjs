@@ -1,10 +1,10 @@
 import axios from "@/config/axios/client.config";
 import { AxiosError } from "axios";
 
-const verifyOtp = async (
-  email: string,
-  otp: string
-): Promise<
+const verifyOtp = async (data: {
+  email: string;
+  otp: string;
+}): Promise<
   | {
       success: boolean;
       message: string;
@@ -12,10 +12,7 @@ const verifyOtp = async (
   | undefined
 > => {
   try {
-    const response = await axios.post("/api/otp/verify", {
-      email,
-      otp,
-    });
+    const response = await axios.post("/api/otp/verify", data);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

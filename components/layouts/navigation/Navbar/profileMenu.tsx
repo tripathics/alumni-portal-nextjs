@@ -55,7 +55,7 @@ export const ProfileMenu: React.FC<{
         </PopoverTrigger>
         <PopoverContent align="end" className="border-0 p-0">
           <Card>
-            <CardContent className="p-2">
+            <CardContent className="p-1">
               <nav className="flex flex-col gap-1">
                 <div className="px-3 py-2 text-sm text-center text-secondary">
                   {user.email}

@@ -1,3 +1,4 @@
+"use client";
 import { FieldValues, useForm } from "react-hook-form";
 import { TextField, Select, Radio, DateField, NumberField } from "..";
 import { Button } from "@/components/ui/button";
@@ -35,9 +36,8 @@ const SchemaForm: React.FC<SchemaFormProps> = ({
   });
 
   useImperativeHandle(submitRef, () => ({
-    submit: () => {
-      // handleSubmit(onSubmit)();
-      return new Promise((resolve, reject) => {
+    submit: () =>
+      new Promise((resolve, reject) => {
         handleSubmit(
           async (data) => {
             try {
@@ -55,8 +55,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({
             );
           }
         )();
-      });
-    },
+      }),
   }));
 
   if (loading) {
@@ -80,11 +79,15 @@ const SchemaForm: React.FC<SchemaFormProps> = ({
               key={index}
               type={field.type}
               label={field.label}
-              required={field.required}
-              {...register(field.name, { required: field.required })}
+              required={!!field.required}
+              {...register(field.name, {
+                required: field.required,
+                pattern: field.pattern,
+              })}
               value={watch(field.name)}
               error={errors[field.name]}
               disabled={field.disabled}
+              autoComplete={field.autocomplete}
             />
           );
         } else if (field.type === "select") {

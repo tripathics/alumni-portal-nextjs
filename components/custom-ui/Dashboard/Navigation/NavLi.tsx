@@ -25,7 +25,7 @@ const NavLi: React.FC<NavLiProps> = ({ Icon, name, path, action = null }) => {
           if (action) action();
         }}
         className={cn(
-          "relative px-4 py-2 mb-2 flex items-center gap-x-3 text-sm font-medium transition-all ease-in-out duration-150 before:content-[''] before:w-1 before:h-full before:absolute before:left-0 before:origin-right hover:before:scale-x-100 before:transition-transform before:ease-out hover:before:bg-foreground text-muted",
+          "relative px-4 py-2 mb-2 flex items-center gap-x-3 text-sm font-medium transition-all ease-in-out duration-150 before:content-[''] before:rounded-full before:w-1 before:h-3/5 before:absolute before:left-0 before:origin-right before:scale-x-0 hover:before:scale-x-100 before:transition-transform before:ease-out before:bg-foreground text-muted",
           {
             ["hover:before:bg-primary before:bg-primary before:scale-x-100 text-primary dark:brightness-150"]:
               pathname === path,

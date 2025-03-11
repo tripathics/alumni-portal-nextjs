@@ -62,6 +62,7 @@ const Alert: React.FC<AlertProps> = ({
             {onClose && (
               <Button
                 variant="ghost"
+                size="icon"
                 aria-label="Close alert"
                 onClick={() => onClose()}
                 type="button"
