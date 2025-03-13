@@ -32,12 +32,14 @@ interface AlertProps {
   severity?: "error" | "success" | "warning" | "info";
   isOpen?: boolean;
   onClose?: () => void;
+  className?: string;
 }
 const Alert: React.FC<AlertProps> = ({
   children,
   severity = "info",
   isOpen,
   onClose,
+  className,
 }) => {
   const AlertIcon = {
     error: WarningCircle,
@@ -48,7 +50,7 @@ const Alert: React.FC<AlertProps> = ({
 
   return (
     (isOpen || (onClose === undefined && isOpen === undefined)) && (
-      <Card role="alert" className={cn(alertStyles({ severity }))}>
+      <Card role="alert" className={cn(alertStyles({ severity }), className)}>
         <CardContent className="flex grow p-4">
           <AlertIcon className="shrink-0" width={24} height={24} />
           <div className="relative ml-4 font-medium grow">

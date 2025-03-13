@@ -265,7 +265,12 @@ const Register = () => {
     <div className="container">
       <div className="flex flex-col gap-6 max-w-md m-auto">
         <AuthHeader title="Sign up for NIT AP Alumni" />
-        <Alert isOpen={!!error} onClose={() => setError(null)} severity="error">
+        <Alert
+          className="mb-0"
+          isOpen={!!error}
+          onClose={() => setError(null)}
+          severity="error"
+        >
           {error}
         </Alert>
         <Card>

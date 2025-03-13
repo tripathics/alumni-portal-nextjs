@@ -25,12 +25,12 @@
   --primary-dark-foreground: 210 40% 98%;
 
   --secondary: 211 11% 39%;
-  --secondary-foreground: 0 9% 90%;
+  --secondary-foreground: 210 40% 98%;
 
   --muted: 211 11% 39%;
   --muted-foreground: 215.4 16.3% 46.9%;
 
-  --accent: 240 4.8% 95.9%;
+  --accent: 240 5% 93%;
   --accent-foreground: 126 61% 24%;
 
   --link: 208 100% 38%;
@@ -39,9 +39,9 @@
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
 
-  --border: 217.2 32.6% 17.5%;
+  --border: 217 11% 69%;
   --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
+  --ring: 217 11% 69%;
 
   --radius: 0.5rem;
 
@@ -59,13 +59,13 @@
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: 0 0% 9%;
+    --background: 0 0% 7%;
     --foreground: 210 40% 98%;
 
-    --card: 0 0% 12%;
+    --card: 0 0% 9%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 12%;
+    --popover: 0 0% 9%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 142 76% 36%;
@@ -74,7 +74,8 @@
     --primary-dark: 142 76% 30%;
     --primary-dark-foreground: 223 47% 9%;
 
-    --secondary: 214 8% 70%;
+    /* --secondary: 214 8% 70%; */
+    --secondary: 0 0% 16%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 214 8% 70%;
@@ -89,7 +90,7 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 26%;
+    --border: 0 0% 22%;
     --input: 222 7% 80%;
     --ring: 212.7 26.8% 83.9%;
     --chart-1: 220 70% 50%;
@@ -145,6 +146,7 @@ html {
   --box-bs: rgba(0, 0, 0, 0.133) 0px 1.6px 3.6px 0px,
     rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px;
   --text-muted: rgb(108, 117, 125);
+  /* color: hsl(150, 14%, 33%); */
 }
 
 @media screen and (max-width: 768px) {

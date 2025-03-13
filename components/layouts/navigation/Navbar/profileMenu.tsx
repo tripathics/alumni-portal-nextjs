@@ -57,7 +57,7 @@ export const ProfileMenu: React.FC<{
           <Card>
             <CardContent className="p-1">
               <nav className="flex flex-col gap-1">
-                <div className="px-3 py-2 text-sm text-center text-secondary">
+                <div className="px-3 py-2 text-sm text-center text-muted">
                   {user.email}
                 </div>
                 {profileIncomplete && (

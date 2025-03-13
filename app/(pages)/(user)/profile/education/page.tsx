@@ -1,6 +1,10 @@
 "use client";
 import SchemaForm from "@/components/forms";
-import { Pencil as EditPencil, CirclePlus as AddIcon } from "lucide-react";
+import {
+  Pencil as EditPencil,
+  CirclePlus as AddIcon,
+  School,
+} from "lucide-react";
 import { useState } from "react";
 import {
   educationFormNITAPSchema,
@@ -24,7 +28,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ProfileTableRowSkeleton } from "@/components/custom-ui/Skeletons/Table";
 import { toast } from "react-toastify";
-import Image from "next/image";
+// import Image from "next/image";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKey } from "@/lib/constants/queryKey";
 import {
@@ -84,27 +88,12 @@ interface EducationRowProps {
   openEditModal: (data: FieldValues) => void;
 }
 const EducationRow: React.FC<EducationRowProps> = ({ data, openEditModal }) => {
+  const { user } = useSession();
   return (
     <TableRow>
       <TableCell className="max-w-fit w-[66px]">
-        <div>
-          {data.institute ===
-          "National Institute of Technology, Arunachal Pradesh" ? (
-            <Image
-              width={0}
-              height={0}
-              className="w-50 h-auto"
-              src="/nitap-logo.svg"
-              alt="nitap-logo"
-            />
-          ) : (
-            <Image
-              width={50}
-              height={50}
-              src="https://img.icons8.com/ios-filled/50/university.png"
-              alt="university"
-            />
-          )}
+        <div className="bg-primary/10 p-4 rounded-full">
+          <School className="text-primary w-6 h-6" strokeWidth={1.5} />
         </div>
       </TableCell>
       <TableCell>
@@ -125,11 +114,12 @@ const EducationRow: React.FC<EducationRowProps> = ({ data, openEditModal }) => {
       <TableCell className="w-12 text-right">
         <Button
           aria-label="Edit experience details"
-          className="p-1.5 rounded-full w-8 h-8"
+          size="icon"
           variant="secondary"
           onClick={() => openEditModal(data)}
+          disabled={!!user?.profile_locked}
         >
-          <EditPencil />
+          <EditPencil size="1rem" />
         </Button>
       </TableCell>
     </TableRow>
