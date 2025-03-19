@@ -3,5 +3,8 @@ export const queryKey = {
   education: "education",
   nitapEducation: "nitap-education",
   experience: "experience",
-  alumniPrefill: "alumniPrefill",
+  alumniPrefill: "alumni-prefill",
+  userApplications: "user-applications",
+  application: "application",
+  applications: "applications",
 };

@@ -49,7 +49,7 @@ const UpdatePassword = ({ closeModal }: { closeModal: () => void }) => {
     mutationFn: updatePassword,
     onSuccess: () => {
       toast.success("Password updated");
-      fetchUser(undefined, true);
+      fetchUser({ optimistic: true });
       closeModal();
     },
     onError: (err) => {

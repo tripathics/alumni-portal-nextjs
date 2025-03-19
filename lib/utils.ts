@@ -16,5 +16,5 @@ export function userAvatarUrl(avatar: string) {
 }
 
 export function signUrl(sign: string) {
-  return `${process.env.NEXT_PUBLIC_API_URL}/media/sign/${sign}`;
+  return `${process.env.NEXT_PUBLIC_API_URL}/media/${sign}`;
 }

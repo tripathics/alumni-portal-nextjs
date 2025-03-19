@@ -7,6 +7,7 @@ import {
   LogOutIcon,
   SettingsIcon,
   User as UserIcon,
+  UserRoundCheck,
 } from "lucide-react";
 
 export const Sidebar: React.FC = () => {
@@ -30,6 +31,11 @@ export const Sidebar: React.FC = () => {
           name: "Experience",
           path: `/profile/` + "experience",
           Icon: BriefcaseIcon,
+        },
+        {
+          name: "Alumni membership",
+          path: `/profile/` + "alumni-membership",
+          Icon: UserRoundCheck,
         },
       ],
     },

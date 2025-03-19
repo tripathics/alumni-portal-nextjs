@@ -1,4 +1,4 @@
-import { LucideIcon, UserCog2, UserRound, UserRoundCheck } from "lucide-react";
+import { LucideIcon, UserCog2, UserRound } from "lucide-react";
 
 import { UserRole } from "@/types/User.type";
 
@@ -9,12 +9,6 @@ export const userLinks: {
   role: UserRole;
 }[] = [
   { Icon: UserRound, label: "Profile", href: "/profile", role: "user" },
-  {
-    Icon: UserRoundCheck,
-    label: "Alumni Membership",
-    href: "/alumni-membership",
-    role: "user",
-  },
   { Icon: UserCog2, label: "Admin", href: "/admin", role: "admin" },
 ];
 

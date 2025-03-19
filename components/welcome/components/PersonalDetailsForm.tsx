@@ -30,7 +30,7 @@ export const PersonalDetailsForm: React.FC<{
     mutationFn: updateProfile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
-      fetchUser(undefined, true);
+      fetchUser({ optimistic: true });
     },
   });
 

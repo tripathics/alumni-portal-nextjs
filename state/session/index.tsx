@@ -55,7 +55,7 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
     reset: resetFetchUser,
   } = useAction({
     apiAction: fetchUserApi,
-    execOnMount: true,
+    initialParams: true,
     onSuccess: (data) => {
       if (data?.user) setUser(data.user);
       fetchProfileCompletionStatus();
@@ -125,7 +125,7 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
       fetchUser,
       fetchProfileCompletionStatus,
     }),
-    [loginAction, logoutAction.exec, fetchProfileCompletionStatus, fetchUser]
+    [loginAction, logoutAction.exec, fetchUser, fetchProfileCompletionStatus]
   );
 
   const router = useRouter();

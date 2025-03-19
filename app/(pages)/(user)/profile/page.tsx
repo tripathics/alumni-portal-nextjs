@@ -33,6 +33,7 @@ import axios from "axios";
 import updateAvatarNew from "@/lib/actions/profile/updateAvatarNew";
 import getUploadUrlApi from "@/lib/actions/media/getUploadUrl";
 import { useSession, useSessionApi } from "@/state/session";
+import { toast } from "react-toastify";
 
 interface PersonalDetailsFormProps {
   prefillData: FieldValues;
@@ -81,7 +82,7 @@ const Page = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
       fetchProfileCompletionStatus();
-      fetchUser(undefined, true);
+      fetchUser({ optimistic: true });
     },
   });
 
@@ -102,6 +103,7 @@ const Page = () => {
           },
         });
         await updateAvatarNew(key);
+        toast.success("Avatar updated successfully");
       } catch (err) {
         if ((err as Error).message) {
           throw err;
@@ -111,7 +113,7 @@ const Page = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.profile] });
       fetchProfileCompletionStatus();
-      fetchUser(undefined, true);
+      fetchUser({ optimistic: true });
       setUpdateAvatarModalOpen(false);
     },
   });

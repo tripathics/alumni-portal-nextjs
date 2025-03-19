@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 import axios from "@/config/axios/client.config";
 import { MembershipApplicationAcknowledgementType } from "@/types/Membership.type";
 import { AlumniMembershipFormSubmissionType } from "@/types/Alumni.type";
+import getUploadUrlApi from "../media/getUploadUrl";
 
 const alumniMembershipSubmit = async (
   data: AlumniMembershipFormSubmissionType
@@ -14,13 +15,26 @@ const alumniMembershipSubmit = async (
   | undefined
 > => {
   try {
-    const response = await axios.request({
+    const signFile = data.sign;
+    const urlRes = await getUploadUrlApi(
+      "sign",
+      signFile.name,
+      signFile.type,
+      signFile.size
+    );
+    const { key, url } = urlRes;
+    await axios.put(url, signFile, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": signFile.type,
       },
+    });
+    const response = await axios.request({
       method: "POST",
       url: "/api/alumni/membership",
-      data: data,
+      data: {
+        membership_level: data.membership_level,
+        sign: key,
+      },
     });
     return response.data;
   } catch (error) {

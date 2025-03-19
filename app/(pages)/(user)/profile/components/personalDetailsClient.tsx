@@ -10,10 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  PersonalDetailsSubmissionType,
-  PersonalDetailsType,
-} from "@/types/Profile.type";
+import { PersonalDetailsType } from "@/types/Profile.type";
 import { PencilIcon } from "lucide-react";
 import { BoxCol, BoxRow, BoxTable } from "../../components/boxTable";
 import SchemaForm from "@/components/forms";
@@ -117,9 +114,9 @@ const PersonalDetailsClient = ({
                   <PersonalDetailsForm
                     prefillData={profile}
                     onSubmit={async (data) => {
-                      await updateProfileMutation.mutateAsync(
-                        data as PersonalDetailsSubmissionType
-                      );
+                      await updateProfileMutation.mutateAsync({
+                        data: data as PersonalDetailsType,
+                      });
                       setUpdateFormModalOpen(false);
                     }}
                     loading={updateProfileMutation.isPending}
@@ -274,9 +271,9 @@ const PersonalDetailsClient = ({
           <PersonalDetailsForm
             prefillData={profile}
             onSubmit={(data) => {
-              updateProfileMutation.mutate(
-                data as PersonalDetailsSubmissionType
-              );
+              updateProfileMutation.mutate({
+                data: data as PersonalDetailsType,
+              });
             }}
             loading={updateProfileMutation.isPending}
           />

@@ -1,14 +1,33 @@
 import React from "react";
 
+export type UseActionExec<T, P = void> = (options?: {
+  params?: P;
+  optimistic?: boolean;
+}) => Promise<T | null>;
+
+/**
+ * Represents the result of a custom hook action.
+ *
+ * @template T - The type of the data returned by the action.
+ * @template P - The type of the parameters accepted by the action. Defaults to `void`.
+ */
+export type UseActionResult<T, P = void> = {
+  data: T | null;
+  loading: boolean;
+  error: Error | null;
+  exec: UseActionExec<T, P>;
+  reset: () => void;
+};
+
 function useAction<T, P = void>({
   apiAction,
-  execOnMount = undefined,
+  initialParams = undefined,
   onSuccess,
   onError,
   onSettled,
 }: {
   apiAction: (params: P) => Promise<T>;
-  execOnMount?: P | true;
+  initialParams?: P | true;
   onSuccess?: (data: T) => void;
   onError?: (error: Error) => void;
   onSettled?: () => void;
@@ -27,8 +46,9 @@ function useAction<T, P = void>({
     onSettledRef.current = onSettled;
   }, [onSuccess, onError, onSettled]);
 
-  const exec = React.useCallback(
-    async (params?: P, optimistic = false): Promise<T | null> => {
+  const exec: UseActionExec<T, P> = React.useCallback(
+    async (options) => {
+      const { params, optimistic = false } = options || {};
       setError(null);
       setLoading(optimistic ? false : true);
       try {
@@ -56,12 +76,14 @@ function useAction<T, P = void>({
   };
 
   React.useEffect(() => {
-    if (execOnMount === true) {
+    if (initialParams === true) {
       exec();
-    } else if (execOnMount !== undefined) {
-      exec(execOnMount);
+    } else if (initialParams !== undefined) {
+      exec({
+        params: initialParams,
+      });
     }
-  }, [execOnMount, exec]);
+  }, [initialParams, exec]);
 
   return {
     data,

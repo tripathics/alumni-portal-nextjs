@@ -22,9 +22,21 @@ const WelcomeExperience = () => {
 
   const changePage = (direction: "next" | "prev" = "next") => {
     setPage((prev) =>
-      direction === "next" ? prev + 1 : prev - 1 < 0 ? 0 : prev - 1
+      direction === "next"
+        ? prev + 1 < welcomeExperienceSections.length - 1
+          ? prev + 1
+          : prev
+        : prev - 1 < 0
+        ? 0
+        : prev - 1
     );
-    formDivRef.current?.scrollTo(0, 0);
+    setPage((prev) => {
+      if (prev + 1 >= welcomeExperienceSections.length - 1 || prev - 1 < 0)
+        return prev;
+      const next = direction === "next" ? prev + 1 : prev - 1;
+      formDivRef.current?.scrollTo(0, 0);
+      return next;
+    });
   };
 
   const handleSubmit = async () => {
@@ -38,7 +50,7 @@ const WelcomeExperience = () => {
         formDivRef.current?.scrollTo(0, 0);
       }
     } finally {
-      setIsLoading(false);
+      if (page < welcomeExperienceSections.length - 1) setIsLoading(false);
     }
   };
 
@@ -84,7 +96,7 @@ const WelcomeExperience = () => {
             size="lg"
             aria-label="Continue to next step"
           >
-            Continue
+            {welcomeExperienceSections[page].btnText}
           </Button>
         </div>
       </footer>

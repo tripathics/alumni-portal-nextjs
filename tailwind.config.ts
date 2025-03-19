@@ -115,7 +115,7 @@ export default {
       },
       backgroundImage: {
         "header-large":
-          "linear-gradient(90deg, #272727 0%, #272727 13%, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0.5) 70%, #272727 87%, #272727 100%)",
+          "linear-gradient(90deg, hsl(0 0% 7%) 0%, hsl(0 0% 7%) 13%, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0.5) 70%, hsl(0 0% 7%) 87%, hsl(0 0% 7%) 100%)",
         "header-mobile":
           "linear-gradient(rgb(0 0 0 / 0.53) 0%, rgb(0 0 0 / 0.55) 100%)",
       },

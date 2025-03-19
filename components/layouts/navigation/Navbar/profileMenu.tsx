@@ -112,12 +112,10 @@ export const ProfileMenu: React.FC<{
           </Card>
         </PopoverContent>
       </Popover>
-      {profileIncomplete && (
-        <CompleteProfileSetup
-          modalOpen={profileCompletionModalOpen}
-          setModalOpen={setProfileCompletionModalOpen}
-        />
-      )}
+      <CompleteProfileSetup
+        modalOpen={profileCompletionModalOpen && !!profileIncomplete}
+        setModalOpen={setProfileCompletionModalOpen}
+      />
     </>
   ) : (
     <div className="hidden md:flex gap-4 items-center">

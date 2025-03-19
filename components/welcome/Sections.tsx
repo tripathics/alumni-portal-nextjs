@@ -19,6 +19,7 @@ export const welcomeExperienceSections = [
       icon: UserSquare,
     },
     main: AvatarUpload,
+    btnText: "Continue",
   },
   {
     name: "personal_profile",
@@ -29,6 +30,7 @@ export const welcomeExperienceSections = [
       icon: UserRoundPen,
     },
     main: PersonalDetailsForm,
+    btnText: "Continue",
   },
   {
     name: "education",
@@ -39,6 +41,7 @@ export const welcomeExperienceSections = [
       icon: GraduationCap,
     },
     main: EducationForm,
+    btnText: "Continue",
   },
   {
     name: "membership_application",
@@ -49,5 +52,6 @@ export const welcomeExperienceSections = [
       icon: UserRoundCheck,
     },
     main: AlumniForm,
+    btnText: "Submit",
   },
 ];
