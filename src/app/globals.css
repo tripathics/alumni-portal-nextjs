@@ -36,6 +36,7 @@
   --color-palette-secondary: hsl(211 11% 39%);
   --color-palette-secondary-dark: hsl(0 0% 16%);
   --color-palette-link: hsl(208 100% 38%);
+  --color-palette-link-dark: hsl(208 100% 86%);
 
   /* status colors */
   --color-palette-info: hsl(230 94% 60%);
@@ -65,6 +66,7 @@
   --color-border: var(--color-palette-border);
   --color-input: var(--color-palette-input);
   --color-ring: var(--color-palette-ring);
+  --color-link: var(--color-palette-link);
 
   --color-primary: var(--color-palette-primary);
   --color-primary-foreground: var(--color-palette-foreground-dark);
@@ -101,6 +103,7 @@
     --color-destructive: var(--color-palette-destructive-dark);
     --color-muted: var(--color-palette-muted-dark);
     --color-accent: var(--color-palette-accent-dark);
+    --color-link: var(--color-palette-link-dark);
   }
 }
 
@@ -161,13 +164,20 @@
 
 @layer components {
   .link {
-    @apply no-underline underline-offset-4 text-primary;
+    @apply no-underline underline-offset-4 text-link;
     @variant hover {
       @apply underline;
     }
   }
 }
 
+/** Toastify **/
+:root {
+  --toastify-icon-color-info: var(--color-info);
+  --toastify-icon-color-success: var(--color-success);
+  --toastify-icon-color-warning: var(--color-warning);
+  --toastify-icon-color-error: var(--color-error);
+}
 .Toastify__toast {
   @apply rounded-full bg-palette-surface text-palette-foreground border border-palette-border shadow-sm;
 

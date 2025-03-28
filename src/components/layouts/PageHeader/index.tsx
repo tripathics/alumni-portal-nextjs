@@ -34,8 +34,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({
             src={bgImage}
             alt="Background"
             fill
-            objectFit="cover"
             quality={100}
+            className="object-cover"
           />
         )}
       </motion.div>

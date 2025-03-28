@@ -48,7 +48,7 @@ const Home: React.FC = () => {
           image={post.image}
           created_at={post.created_at}
           links={post.links}
-          color={i % 2 === 0 ? "light" : "dark"}
+          colorScheme={i % 2 === 0 ? "default" : "accent"}
         />
       ))}
       <div className="container py-8">
@@ -67,11 +67,14 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="bg-palette-muted text-palette-foreground-dark">
-        <div className="container py-8">
-          <h2 className="leading-none font-semibold text-2xl mb-6">Stories</h2>
-        </div>
-      </div>
+      <FeaturedPost
+        title="Message from Director"
+        description={featuredPosts[0].description}
+        image={featuredPosts[0].image}
+        created_at={featuredPosts[0].created_at}
+        links={featuredPosts[0].links}
+        colorScheme="grey"
+      />
     </>
   );
 };
