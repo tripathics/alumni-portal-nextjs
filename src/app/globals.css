@@ -109,7 +109,11 @@
     max-width: var(--breakpoint-xl);
     width: 100%;
     margin-inline: auto;
-    padding-inline: 2rem;
+    padding-inline: 1rem;
+
+    @variant lg {
+      padding-inline: 2rem;
+    }
   }
 
   .page-main {
@@ -152,5 +156,22 @@
   h5,
   h6 {
     @apply font-serif;
+  }
+}
+
+@layer components {
+  .link {
+    @apply no-underline underline-offset-4 text-primary;
+    @variant hover {
+      @apply underline;
+    }
+  }
+}
+
+.Toastify__toast {
+  @apply rounded-full bg-palette-surface text-palette-foreground border border-palette-border shadow-sm;
+
+  @variant dark {
+    @apply bg-palette-surface-dark text-palette-foreground-dark border-palette-border-dark;
   }
 }
