@@ -20,6 +20,11 @@ const FeaturedPost: React.FC<{
     accent: "bg-card text-foreground",
     grey: "bg-palette-muted text-palette-foreground-dark",
   };
+  // const btnVariant = {
+  //   default: "default",
+  //   accent: "default",
+  //   grey: "outline",
+  // };
   return (
     <div className={colorSchemes[colorScheme]}>
       <div
@@ -36,6 +41,9 @@ const FeaturedPost: React.FC<{
                 key={i}
                 className={buttonVariants({
                   size: "lg",
+                  variant: ["default", "accent"].includes(colorScheme)
+                    ? "default"
+                    : "fill",
                 })}
                 href={url}
               >

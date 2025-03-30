@@ -1,6 +1,9 @@
+"use client";
 import { cx } from "class-variance-authority";
 import * as motion from "motion/react-client";
 import Image from "next/image";
+
+const MotionImage = motion.create(Image);
 
 interface PageHeaderProps {
   pageHeading?: string;
@@ -22,30 +25,26 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   };
 
   return (
-    <header className="relative -z-2 bg-palette-background-dark text-palette-foreground-dark overflow-hidden">
-      <motion.div
-        initial={{ opacity: 0, scale: 1.06 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 3, delay: 0.5, ease: "easeOut" }}
-        className="bg-no-repeat bg-center bg-cover w-full h-full -z-1 absolute bg-background"
-      >
-        {bgImage && (
-          <Image
-            src={bgImage}
-            alt="Background"
-            fill
-            quality={100}
-            className="object-cover"
-          />
-        )}
-      </motion.div>
-      <div className="absolute w-full h-full -z-1 md:bg-linear-(--page-header-mask-gradient) bg-linear-(--page-header-mobile-gradient)" />
+    <header className="relative bg-palette-background-dark text-palette-foreground-dark overflow-hidden">
+      {bgImage && (
+        <MotionImage
+          initial={{ opacity: 0, scale: 1.06 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 3, delay: 0.5, ease: "easeOut" }}
+          src={bgImage}
+          alt="Background"
+          fill
+          quality={100}
+          className="object-cover"
+        />
+      )}
+      <div className="absolute w-full h-full md:bg-linear-(--page-header-mask-gradient) bg-linear-(--page-header-mobile-gradient)" />
       <motion.div
         transition={{ duration: 2 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className={cx(
-          "container py-10 flex flex-col justify-center",
+          "relative container py-10 flex flex-col justify-center",
           variantStyles[variant]
         )}
       >

@@ -38,7 +38,7 @@ export default function RootLayout({
         <QueryProvider>
           <SessionContextProvider>
             <Toast />
-            <div id="root">{children}</div>
+            {children}
           </SessionContextProvider>
         </QueryProvider>
       </body>

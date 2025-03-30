@@ -1,3 +1,5 @@
+import { ExternalLink } from "lucide-react";
+
 const Footer = () => (
   <div className="bg-palette-accent-dark text-palette-foreground-dark py-8">
     <div className="container text-sm flex gap-1 sm:flex-row flex-col-reverse items-center justify-center sm:justify-start">
@@ -5,6 +7,7 @@ const Footer = () => (
         © {new Date().getFullYear()}{" "}
         <a className="link text-palette-link-dark" href="https://nitap.ac.in">
           NIT Arunachal Pradesh
+          <ExternalLink className="size-3.5 inline ml-1" />
         </a>
         . All rights reserved
       </div>
@@ -16,6 +19,7 @@ const Footer = () => (
           href="https://github.com/tripathics"
         >
           tripathics
+          <ExternalLink className="size-3.5 inline ml-1" />
         </a>
       </div>
     </div>
