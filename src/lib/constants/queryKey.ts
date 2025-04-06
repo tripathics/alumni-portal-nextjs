@@ -7,4 +7,5 @@ export const queryKey = {
   userApplications: "user-applications",
   application: "application",
   applications: "applications",
+  heroSection: "hero-section",
 };

@@ -133,11 +133,9 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
 
   React.useEffect(() => {
     eventEmitter.on("unauthorized", () => {
-      if (user) {
-        clearUser();
-        toast.error("Session expired.");
-        router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
-      }
+      if (user) clearUser();
+      toast.error("Session expired.");
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
     });
     return () => {
       eventEmitter.off("unauthorized");

@@ -18,3 +18,11 @@ export function userAvatarUrl(avatar: string) {
 export function signUrl(sign: string) {
   return `${process.env.NEXT_PUBLIC_API_URL}/media/${sign}`;
 }
+
+export function heroImageUrl(hero_image?: string | null) {
+  if (!hero_image) return;
+  if (hero_image.includes("blob:")) {
+    return hero_image;
+  }
+  return `${process.env.NEXT_PUBLIC_API_URL}/media/${hero_image}`;
+}

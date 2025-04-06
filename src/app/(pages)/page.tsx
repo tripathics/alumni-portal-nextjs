@@ -1,6 +1,8 @@
 import PageHeader from "@/components/layouts/PageHeader";
 import { ProgramsEvents, Stories } from "./components/Stories";
 import FeaturedPost from "./components/FeaturedPost";
+import createServerAxiosInstance from "@/config/axios/server.config";
+import { heroImageUrl } from "@/lib/utils";
 
 const featuredPosts = [
   {
@@ -31,14 +33,23 @@ const featuredPosts = [
   },
 ];
 
-const Home: React.FC = () => {
+const Home: React.FC = async () => {
+  const axiosInstance = await createServerAxiosInstance();
+  const heroData = await axiosInstance.get<{
+    title: string;
+    description: string;
+    hero_image: string;
+    created_at: string;
+    links: { title: string; url: string }[];
+  }>("/api/nitapalumnicontent/hero");
+
   return (
     <>
       <PageHeader
-        bgImage="/hero.png"
+        bgImage={heroImageUrl(heroData.data.hero_image)}
         variant="large"
-        pageHeading="Celebrating the 10th convocation of NIT Arunachal Pradesh"
-        subHeading="On December 19, we welcomed approximately 200, 2023 graduates to the 10th convocation ceremony of the National Institute of Technology Arunachal Pradesh"
+        pageHeading={heroData.data.title}
+        subHeading={heroData.data.description}
       />
       {featuredPosts.map((post, i) => (
         <FeaturedPost

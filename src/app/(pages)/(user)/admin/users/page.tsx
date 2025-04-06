@@ -1,4 +1,5 @@
-import getUsers from "@/utils/api/admin/getUsers";
+"use client";
+import getUsers from "@/lib/actions/admin/getUsers";
 import { User, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { useEffect, useState } from "react";

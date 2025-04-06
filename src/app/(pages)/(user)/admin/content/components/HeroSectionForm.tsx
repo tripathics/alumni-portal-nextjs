@@ -1,9 +1,15 @@
 import Image from "next/image";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { useForm, FieldValues, Controller } from "react-hook-form";
-import { PencilIcon, X } from "lucide-react";
+import { useForm, Controller } from "react-hook-form";
+import { PencilIcon, Undo2 } from "lucide-react";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { cn } from "@/lib/utils";
+import { cn, heroImageUrl } from "@/lib/utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import updateHeroSection from "@/lib/actions/admin/content/updateHeroSection";
+import fetchHero from "@/lib/actions/nitapalumnicontent/fetchHero";
+import { queryKey } from "@/lib/constants/queryKey";
+import React from "react";
+import { toast } from "react-toastify";
 
 const GrowableTextarea: React.FC<
   React.TextareaHTMLAttributes<HTMLTextAreaElement>
@@ -33,41 +39,92 @@ const GrowableTextarea: React.FC<
 };
 
 const HeroSectionForm = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateHeroSection,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKey.heroSection],
+      });
+      reset();
+    },
+    onError: (error) => {
+      toast.dismiss();
+      toast.error(error.message);
+    },
+  });
+
+  const { data: heroData, isLoading } = useQuery({
+    queryKey: [queryKey.heroSection],
+    staleTime: Infinity,
+    queryFn: fetchHero,
+  });
+
   const {
     register,
     watch,
     control,
     formState: { isDirty },
     handleSubmit,
+    setValue,
+    reset,
   } = useForm({
     defaultValues: {
-      title: "Celebrating the 10th convocation of NIT Arunachal Pradesh",
-      description:
-        "On December 19, we welcomed approximately 200, 2023 graduates to the 10th convocation ceremony of the National Institute of Technology Arunachal Pradesh",
-      heroImage: null as File | null,
+      title: heroData?.title || "",
+      description: heroData?.description || "",
+      hero_image: null as File | null,
     },
   });
-  const file = watch("heroImage");
-  const fileUrl = file ? URL.createObjectURL(file) : "/hero.png";
+  const file = watch("hero_image");
+  const fileUrl = file
+    ? URL.createObjectURL(file)
+    : heroData?.hero_image
+    ? heroImageUrl(heroData?.hero_image)
+    : null;
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
-  };
+  React.useEffect(() => {
+    if (!isLoading && heroData) {
+      setValue("title", heroData.title);
+      setValue("description", heroData.description);
+    }
+    return () => {
+      toast.dismiss();
+    };
+  }, [heroData, isLoading, setValue]);
 
   return (
     <div className="relative overflow-hidden border border-border/20">
-      <Image
-        src={fileUrl}
-        alt="Background"
-        fill
-        quality={100}
-        className="object-cover"
-      />
+      {fileUrl && (
+        <Image
+          src={fileUrl}
+          alt="Background"
+          fill
+          className="object-cover"
+          quality={100}
+          unoptimized
+        />
+      )}
       <div className="absolute -left-20 -right-20 h-full md:bg-linear-(--page-header-mask-gradient) bg-linear-(--page-header-mobile-gradient)" />
       <div className="relative py-16 container">
         <form
           className="max-w-2xl flex flex-col justify-around min-h-[60vh]"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(
+            (data) => {
+              console.log(data);
+              mutate(data);
+            },
+            (error) => {
+              const { title, description, hero_image } = error;
+              const errorMessage =
+                title?.message ||
+                description?.message ||
+                hero_image?.message ||
+                "Something went wrong";
+              toast.dismiss();
+              toast.error(errorMessage);
+            }
+          )}
         >
           <GrowableTextarea
             {...register("title", { required: "Title is required" })}
@@ -85,13 +142,18 @@ const HeroSectionForm = () => {
           />
           <div className="flex justify-end gap-4">
             <DialogClose asChild>
-              <Button size="lg" variant="secondary">
+              <Button size="lg" variant="secondary" disabled={isPending}>
                 Cancel
               </Button>
             </DialogClose>
             {isDirty && (
               <div>
-                <Button size="lg" type="submit">
+                <Button
+                  disabled={isLoading}
+                  loading={isPending}
+                  size="lg"
+                  type="submit"
+                >
                   Update
                 </Button>
               </div>
@@ -100,15 +162,30 @@ const HeroSectionForm = () => {
         </form>
         <form className="absolute top-4 right-0 flex flex-col gap-4">
           <Controller
+            rules={{
+              validate: {
+                lessThan3MB: (file?: File | null) =>
+                  !file ||
+                  file?.size < 3 * 1024 * 1024 ||
+                  "File size should be less than 3MB",
+                acceptedFormats: (file?: File | null) =>
+                  !file ||
+                  [
+                    "image/webp",
+                    "image/jpeg",
+                    "image/jpg",
+                    "image/png",
+                  ].includes(file?.type) ||
+                  "Only JPEG, PNG and WEBP files are allowed",
+              },
+            }}
             control={control}
-            name="heroImage"
+            name="hero_image"
             render={({ field }) => (
               <>
                 <label
                   className={buttonVariants({
                     variant: "outline",
-                    size: "icon",
-                    className: "p-2 size-10",
                   })}
                 >
                   <input
@@ -121,18 +198,19 @@ const HeroSectionForm = () => {
                     }}
                     accept="image/*"
                   />
-                  <PencilIcon />
+                  <PencilIcon className="size-5" />
+                  Edit background
                 </label>
                 {file && (
                   <Button
-                    variant="destructive"
-                    size="icon"
-                    className="p-2 size-10"
+                    variant="fill"
+                    // size="icon"
                     onClick={() => {
                       field.onChange(null);
                     }}
                   >
-                    <X />
+                    <Undo2 className="size-5" />
+                    Revert
                   </Button>
                 )}
               </>
