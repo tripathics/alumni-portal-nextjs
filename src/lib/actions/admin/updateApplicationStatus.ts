@@ -2,22 +2,25 @@ import axios from "@/config/axios/client.config";
 import { MembershipLevelType } from "@/types/Membership.type";
 import { AxiosError } from "axios";
 
-const updateApplicationStatus = async (
+const updateApplicationStatus = async ({
+  id,
+  status
+}: {
   id: string,
   status: "approved" | "rejected"
-): Promise<
+}): Promise<
   | {
-      message: string;
-      membershipApplicationRecord: {
-        id: string;
-        user_id: string;
-        membership_level: MembershipLevelType;
-        sign: string;
-        created_at: string;
-        updated_at: string;
-        status: "approved" | "rejected" | "pending";
-      };
-    }
+    message: string;
+    membershipApplicationRecord: {
+      id: string;
+      user_id: string;
+      membership_level: MembershipLevelType;
+      sign: string;
+      created_at: string;
+      updated_at: string;
+      status: "approved" | "rejected" | "pending";
+    };
+  }
   | undefined
 > => {
   try {

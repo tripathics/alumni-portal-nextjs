@@ -26,8 +26,8 @@ const MultistepForm: React.FC<{
           ? prev
           : prev + 1
         : prev - 1 < 0
-        ? 0
-        : prev - 1
+          ? 0
+          : prev - 1
     );
   };
 
@@ -36,7 +36,7 @@ const MultistepForm: React.FC<{
 
   const handleSubmit = async (data: FieldValues) => {
     try {
-      await onSubmit(data);
+      onSubmit(data);
       setSharedState({ ...sharedState, ...data });
       changeStep("next");
     } catch (e) {

@@ -2,6 +2,8 @@
 import React from "react";
 import HeroSectionForm from "./components/HeroSectionForm";
 import GridItem, { GridItemOption } from "./components/GridItem";
+import DirectorsMessageForm from "./components/directorMessageForm";
+import PresidentsMessageForm from "./components/presidentMessageForm";
 
 const Page = () => {
   return (
@@ -28,14 +30,14 @@ const Page = () => {
           description="Message from the director"
           trigger={<p>Manage director&apos;s message</p>}
         >
-          <p>Here is the director&apos;s message</p>
+          <DirectorsMessageForm />
         </GridItemOption>
         <GridItemOption
           title="President's message"
           description="Message from the president"
           trigger={<p>Manage president&apos;s message</p>}
         >
-          <p>Here is the president&apos;s message</p>
+          <PresidentsMessageForm />
         </GridItemOption>
       </GridItem>
       <GridItem

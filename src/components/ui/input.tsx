@@ -15,7 +15,7 @@ const Input = React.forwardRef<
       className={cn(
         "relative bg-transparent py-3 border-b border-input/20 outline-hidden w-full font-sans focus:border-input transition-all ease duration-100 disabled:cursor-not-allowed disabled:opacity-50 text-input focus:text-foreground hover:border-input/50",
         {
-          "border-red-700/80": !!error,
+          "border-error/80": !!error,
         },
         className
       )}
@@ -27,7 +27,9 @@ const Input = React.forwardRef<
 Input.displayName = "Input";
 
 const InputError: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <p className="text-xs mt-1 text-red-700">{children}</p>
+  <div className="relative">
+    <p className="text-xs mt-1 text-error absolute">{children}</p>
+  </div>
 );
 
 export { Input, InputError };

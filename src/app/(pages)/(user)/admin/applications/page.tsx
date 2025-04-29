@@ -1,9 +1,10 @@
 "use client";
 import { MembershipApplication, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import fetchMembershipApplications from "@/lib/actions/admin/fetchMembershipApplications";
+import { useQuery } from "@tanstack/react-query";
+import { queryKey } from "@/lib/constants/queryKey";
 
 async function getData(): Promise<MembershipApplication[]> {
   try {
@@ -27,31 +28,24 @@ async function getData(): Promise<MembershipApplication[]> {
 }
 
 export default function Applications() {
-  const [applications, setApplications] = useState<MembershipApplication[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setLoading(true);
-        const data = await getData();
-        setApplications(data);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
+  const { data: applications, isLoading } = useQuery({
+    queryKey: [queryKey.applications],
+    queryFn: getData,
+  });
 
   return (
     <div>
       <header>
         <h2 className="mb-4">Membership applications</h2>
       </header>
-      {loading ? (
+      {isLoading ? (
         <Spinner />
-      ) : (
+      ) : applications ? (
         <DataTable columns={columns} data={applications} />
+      ) : (
+        <div>
+          <p>No applications found</p>
+        </div>
       )}
     </div>
   );

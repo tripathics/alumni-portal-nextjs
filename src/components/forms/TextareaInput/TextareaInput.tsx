@@ -34,7 +34,7 @@ const TextareaInput: React.ForwardRefExoticComponent<
         <label
           htmlFor={name}
           data-name={`${label}${required ? "" : " (optional)"}`}
-          className="relative text-xs text-input focus-within:text-foreground transition-colors duration-100 flex flex-col gap-2 before:content-[attr(data-name)] before:absolute before:block before:pb-1 before:-translate-y-full overflow-visible before:text-xs before:text-input before:transition-colors before:duration-100"
+          className="relative text-xs text-input focus-within:text-foreground transition-colors duration-100 flex flex-col gap-2 before:content-[attr(data-name)] before:absolute before:block before:pb-1 before:-translate-y-full overflow-visible before:text-xs before:text-input before:transition-colors before:duration-100 focus-within:before:text-foreground"
         >
           <Textarea
             ref={ref}

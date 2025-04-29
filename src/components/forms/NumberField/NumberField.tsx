@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import Label from "../../ui/label";
 import { Input, InputError } from "@/components/ui/input";
+import FieldWrapper from "../FieldWrapper";
 
 export interface NumberFieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -42,7 +43,7 @@ const NumberField: React.ForwardRefExoticComponent<
     if (min) range.min = typeof min === "string" ? parseInt(min) : min;
     if (max) range.max = typeof max === "string" ? parseInt(max) : max;
     return (
-      <div className="my-10 first:mt-3">
+      <FieldWrapper>
         <Label
           htmlFor={name}
           label={label}
@@ -60,7 +61,7 @@ const NumberField: React.ForwardRefExoticComponent<
           />
         </Label>
         {error && <InputError>{error.message as string}</InputError>}
-      </div>
+      </FieldWrapper>
     );
   }
 );

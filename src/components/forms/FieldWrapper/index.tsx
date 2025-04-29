@@ -3,5 +3,5 @@ export default function FieldWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="mt-4 mb-10">{children}</div>;
+  return <div className="pt-6 pb-8">{children}</div>;
 }

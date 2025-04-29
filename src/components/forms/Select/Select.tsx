@@ -2,6 +2,8 @@ import { InputError } from "@/components/ui/input";
 import Label from "@/components/ui/label";
 import { forwardRef } from "react";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
+import FieldWrapper from "../FieldWrapper";
+import { cn } from "@/lib/utils";
 
 export interface SelectProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -32,7 +34,7 @@ const Select: React.ForwardRefExoticComponent<
     return !options || !Array.isArray(options) ? (
       <p>Invalid options array</p>
     ) : (
-      <div className="mt-6 mb-10 first:mt-3">
+      <FieldWrapper>
         <Label
           htmlFor={name}
           label={`Select ${label.toLowerCase()}`}
@@ -40,7 +42,9 @@ const Select: React.ForwardRefExoticComponent<
           filled
         >
           <select
-            className="font-sans text-base leading-5 relative bg-transparent py-3 border-b border-input/20 outline-hidden w-full focus:border-input/80"
+            className={cn("font-sans text-base leading-5 relative bg-transparent py-3 border-b border-input/20 outline-hidden w-full focus:border-input/80", {
+              "border-error/80": !!error
+            })}
             disabled={disabled}
             name={name}
             ref={ref}
@@ -66,7 +70,7 @@ const Select: React.ForwardRefExoticComponent<
               <InputError key={index}>{err.message}</InputError>
             ))
           ))}
-      </div>
+      </FieldWrapper>
     );
   }
 );

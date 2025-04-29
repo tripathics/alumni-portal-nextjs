@@ -6,7 +6,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import React from "react";
-import WelcomeExperience from "@/components/welcome/ index";
+import WelcomeExperience from "@/components/welcome/index";
 import { useSession } from "@/state/session";
 import { AnimatePresence } from "motion/react";
 

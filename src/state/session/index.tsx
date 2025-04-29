@@ -18,15 +18,15 @@ const SessionApi = React.createContext<SessionApiContext>({
     loading: false,
     error: null,
     exec: () =>
-      new Promise((resolve, reject) => reject("Login is not implemented")),
-    reset: () => {},
+      new Promise((_, reject) => reject("Login is not implemented")),
+    reset: () => { },
   },
   logout: () =>
-    new Promise((resolve, reject) => reject("logout is not implemented")),
+    new Promise((_, reject) => reject("logout is not implemented")),
   fetchUser: () =>
-    new Promise((resolve, reject) => reject("fetchUser is not implemented")),
+    new Promise((_, reject) => reject("fetchUser is not implemented")),
   fetchProfileCompletionStatus: () =>
-    new Promise((resolve, reject) =>
+    new Promise((_, reject) =>
       reject("fetchProfileCompletionStatus is not implemented")
     ),
 });
@@ -60,7 +60,7 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
       if (data?.user) setUser(data.user);
       fetchProfileCompletionStatus();
     },
-    onError: () => {},
+    onError: () => { },
   });
 
   const loginAction = useAction({

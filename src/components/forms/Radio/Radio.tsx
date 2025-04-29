@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import { InputError } from "@/components/ui/input";
 import Label from "@/components/ui/label";
+import FieldWrapper from "../FieldWrapper";
 
 export interface RadioProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -22,7 +23,7 @@ const Radio: React.ForwardRefExoticComponent<
     return !options ? (
       <p>Invalid options array</p>
     ) : (
-      <div className="my-10 first:mt-3">
+      <FieldWrapper>
         <Label htmlFor={name} required={!!required} label={label} filled>
           {/* radio group */}
           <div className="flex gap-x-6 gap-y-3 py-3">
@@ -46,7 +47,7 @@ const Radio: React.ForwardRefExoticComponent<
           </div>
         </Label>
         {error && <InputError>{error.message as string}</InputError>}
-      </div>
+      </FieldWrapper>
     );
   }
 );

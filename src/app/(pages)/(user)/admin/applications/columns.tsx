@@ -7,10 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {
-  MembershipApplcationStatus,
-  MembershipApplicationType,
-} from "@/types/Membership.type";
+import { MembershipApplcationStatus } from "@/types/Membership.type";
 import { fetchApplicationByIdAdmin } from "@/lib/actions/admin/fetchApplicationById";
 import updateApplicationStatus from "@/lib/actions/admin/updateApplicationStatus";
 import { getDateWithTime, getMonth, toTitleCase } from "@/lib/helper";
@@ -18,6 +15,9 @@ import { Eye as EyeOpenIcon } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { queryKey } from "@/lib/constants/queryKey";
+import { Spinner } from "@/components/ui/spinner";
 
 export type MembershipApplication = {
   id: string;
@@ -80,55 +80,14 @@ export const columns: ColumnDef<MembershipApplication>[] = [
 ];
 
 const ApplicationAction: React.FC<{ id: string }> = ({ id }) => {
-  const [applicationData, setApplicationData] =
-    useState<MembershipApplicationType | null>(null);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const fetchApplicationData = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchApplicationByIdAdmin(id);
-      if (data) {
-        setApplicationData(data);
-        setIsApplicationModalOpen(true);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateStatus = async (id: string, status: "approved" | "rejected") => {
-    try {
-      const data = await updateApplicationStatus(id, status);
-      if (data?.membershipApplicationRecord) {
-        toast.success(
-          `Application ${data?.membershipApplicationRecord.status}`,
-          {
-            autoClose: 1000,
-          }
-        );
-        setIsApplicationModalOpen(false);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      }
-    }
-  };
 
   return (
     <div className="flex items-center">
       <Button
         variant="ghost"
         size="icon"
-        onClick={(e) => {
-          e.preventDefault();
-          fetchApplicationData();
-        }}
-        loading={loading}
+        onClick={() => setIsApplicationModalOpen(true)}
         aria-label="View application"
       >
         <EyeOpenIcon width={16} height={16} />
@@ -137,34 +96,69 @@ const ApplicationAction: React.FC<{ id: string }> = ({ id }) => {
         open={isApplicationModalOpen}
         onOpenChange={setIsApplicationModalOpen}
       >
-        <DialogContent>
-          <DialogTitle>Life membership application</DialogTitle>
-          {!!applicationData && (
-            <Application applicationData={applicationData} />
-          )}
-          <DialogFooter>
-            <div className="flex gap-4 justify-between *:grow">
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  if (!applicationData) return;
-                  updateStatus(applicationData?.id, "rejected");
-                }}
-              >
-                Reject
-              </Button>
-              <Button
-                onClick={() => {
-                  if (!applicationData) return;
-                  updateStatus(applicationData?.id, "approved");
-                }}
-              >
-                Approve
-              </Button>
-            </div>
-          </DialogFooter>
-        </DialogContent>
+        {isApplicationModalOpen && (
+          <ApplicationDetails
+            id={id}
+            handleSuccess={() => { setIsApplicationModalOpen(false) }}
+          />
+        )}
       </Dialog>
     </div>
   );
 };
+
+const ApplicationDetails: React.FC<{
+  id: string;
+  handleSuccess?: () => void
+}> = ({ id, handleSuccess }) => {
+  const queryClient = useQueryClient()
+
+  const { data: applicationData, isLoading } = useQuery({
+    queryFn: () => fetchApplicationByIdAdmin(id),
+    queryKey: [queryKey.application, id],
+  })
+
+  const { mutate: updateStatus } = useMutation({
+    mutationFn: updateApplicationStatus,
+    onSuccess: (data) => {
+      if (data) toast.info(data.message)
+      queryClient.invalidateQueries({ queryKey: [queryKey.applications] })
+      handleSuccess?.()
+    }
+  })
+
+  return (
+    <DialogContent>
+      <DialogTitle>Life membership application</DialogTitle>
+      {isLoading
+        ? <Spinner className="animate-spin" />
+        : applicationData
+          ? (<>
+            <Application applicationData={applicationData} />
+            <DialogFooter>
+              <div className="flex gap-4 justify-between *:grow">
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    if (!applicationData) return;
+                    updateStatus({ id: applicationData?.id, status: "rejected" });
+                  }}
+                >
+                  Reject
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (!applicationData) return;
+                    updateStatus({ id: applicationData?.id, status: "approved" });
+                  }}
+                >
+                  Approve
+                </Button>
+              </div>
+            </DialogFooter>
+          </>)
+          : <p>An error occured</p>
+      }
+    </DialogContent>
+  )
+}

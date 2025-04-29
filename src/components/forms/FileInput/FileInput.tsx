@@ -9,6 +9,7 @@ import {
   Merge,
 } from "react-hook-form";
 import { buttonVariants } from "@/components/ui/button";
+import { InputError } from "@/components/ui/input";
 
 interface FileInputProps {
   control: Control<FieldValues>;
@@ -120,9 +121,7 @@ const FileInput: React.FC<FileInputProps> = ({
         <p className="text-muted text-sm mt-2">Files selected: {fileName}</p>
       )}
       {error && (
-        <p className="text-sm text-red-700 dark:text-red-500 mt-2">
-          {error.message as string}
-        </p>
+        <InputError>{error.message as string}</InputError>
       )}
     </>
   );

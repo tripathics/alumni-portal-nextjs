@@ -5,6 +5,7 @@ import { AxiosError } from "axios";
 export const fetchApplicationByIdAdmin = async (
   id: string
 ): Promise<MembershipApplicationType | undefined> => {
+  if (!id) return;
   try {
     const response = await axios.get(
       `/api/admin/membership-applications/${id}`
@@ -20,6 +21,7 @@ export const fetchApplicationByIdAdmin = async (
 export const fetchApplicationById = async (
   id: string
 ): Promise<MembershipApplicationType | undefined> => {
+  if (!id) return;
   try {
     const response = await axios.get(`/api/alumni/past-applications/${id}`);
     return response.data;

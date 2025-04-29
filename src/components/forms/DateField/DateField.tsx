@@ -2,6 +2,7 @@ import Label from "@/components/ui/label";
 import { forwardRef } from "react";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import { Input, InputError } from "@/components/ui/input";
+import FieldWrapper from "../FieldWrapper";
 
 export interface DateFieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -34,7 +35,7 @@ const DateField: React.ForwardRefExoticComponent<
     }
 
     return (
-      <div className="my-10 first:mt-3">
+      <FieldWrapper>
         <Label htmlFor={name} required={!!required} label={label} filled>
           <Input
             type={type}
@@ -43,10 +44,11 @@ const DateField: React.ForwardRefExoticComponent<
             onChange={onChange}
             onBlur={onBlur}
             disabled={disabled}
+            error={error}
           />
         </Label>
         {error && <InputError>{error.message as string}</InputError>}
-      </div>
+      </FieldWrapper>
     );
   }
 );

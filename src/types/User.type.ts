@@ -10,7 +10,7 @@ export interface UserType {
   title: TitleType;
   first_name: string;
   last_name?: string | null;
-  avatar: string;
+  avatar: string | null;
   profile_locked: boolean | null;
   created_at: string;
   updated_at: string;
