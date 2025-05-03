@@ -9,7 +9,7 @@ const Footer = () => (
           NIT Arunachal Pradesh
           <ExternalLink className="size-3.5 inline ml-1" />
         </a>
-        . All rights reserved
+        {" All rights reserved"}
       </div>
       <div className="mx-2 border-r-2 border-palette-foreground-dark h-4 sm:block hidden" />
       <div>

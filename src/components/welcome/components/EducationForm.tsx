@@ -59,35 +59,38 @@ export const EducationForm: React.FC<EducationFormProps> = ({ ref }) => {
   }
 
   return (
-    <>
-      {!!fetchedDegrees?.length ? (
-        <div>
-          <p className="text-sm mb-12">
-            Select the degree of your existing education records at NIT
-            Arunachal Pradesh to modify.
-          </p>
-          <Select
-            required
-            label="Existing Degree"
-            name="degree"
-            options={fetchedDegrees}
-            onChange={(e) => {
-              setPrefillData(
-                educationAtNitapQuery.data?.[parseInt(e.target.value)] || null
-              );
-            }}
-            onBlur={() => {}}
+    !!fetchedDegrees?.length ? (
+      <div>
+        <p className="text-sm mb-8">
+          Select the degree of your existing education records at NIT
+          Arunachal Pradesh to modify.
+        </p>
+        <Select
+          required
+          label="Existing Degree"
+          name="degree"
+          options={fetchedDegrees}
+          onChange={(e) => {
+            setPrefillData(
+              educationAtNitapQuery.data?.[parseInt(e.target.value)] || null
+            );
+          }}
+          onBlur={() => { }}
+        />
+        {prefillData && (
+          <SchemaForm
+            prefillData={prefillData}
+            schema={educationFormNITAPSchema}
+            onSubmit={handleSubmit}
+            submitRef={ref}
           />
-          {prefillData && (
-            <SchemaForm
-              prefillData={prefillData}
-              schema={educationFormNITAPSchema}
-              onSubmit={handleSubmit}
-              submitRef={ref}
-            />
-          )}
-        </div>
-      ) : (
+        )}
+      </div>
+    ) : (
+      <div>
+        <p className="text-sm mb-8">
+          If you have multiple degrees, enter the details of your latest degree. Other details can be added later.
+        </p>
         <SchemaForm
           schema={educationFormNITAPSchema}
           onSubmit={handleSubmit}
@@ -96,7 +99,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ ref }) => {
           }}
           submitRef={ref}
         />
-      )}
-    </>
+      </div>
+    )
   );
 };

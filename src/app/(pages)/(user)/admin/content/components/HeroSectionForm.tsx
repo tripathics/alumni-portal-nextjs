@@ -6,7 +6,7 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { cn, heroImageUrl } from "@/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import updateHeroSection from "@/lib/actions/admin/content/updateHeroSection";
-import fetchHero from "@/lib/actions/nitapalumnicontent/fetchHero";
+import fetchHero from "@/lib/actions/public/fetchHero";
 import { queryKey } from "@/lib/constants/queryKey";
 import React from "react";
 import { toast } from "react-toastify";
@@ -80,8 +80,8 @@ const HeroSectionForm = () => {
   const fileUrl = file
     ? URL.createObjectURL(file)
     : heroData?.hero_image
-    ? heroImageUrl(heroData?.hero_image)
-    : null;
+      ? heroImageUrl(heroData?.hero_image)
+      : null;
 
   React.useEffect(() => {
     if (!isLoading && heroData) {

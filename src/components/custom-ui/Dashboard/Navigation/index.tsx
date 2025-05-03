@@ -1,34 +1,36 @@
-import { LucideProps } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import NavLi from "./NavLi";
+import { UserRole } from "@/types/User.type";
+import { useSession } from "@/state/session";
 
-interface NavigationProps {
+export interface NavigationProps {
   title: string;
   links: {
     name: string;
     path: string;
-    Icon:
-      | React.ForwardRefExoticComponent<
-          Omit<React.SVGProps<SVGSVGElement>, "ref"> &
-            React.RefAttributes<SVGSVGElement>
-        >
-      | React.FC<React.SVGProps<SVGSVGElement>>
-      | React.ForwardRefExoticComponent<
-          Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
-        >;
+    Icon: LucideIcon;
+    roleVisibleTo?: UserRole;
     action?: () => void;
   }[];
 }
-const Navigation: React.FC<NavigationProps> = ({ title, links }) => (
-  <nav>
-    <div className="mb-2">
-      <h2 className="text-xs font-bold font-sans text-muted px-4">{title}</h2>
-    </div>
-    <ul className="mb-8">
-      {links.map((link, index) => (
-        <NavLi key={index} {...link} />
-      ))}
-    </ul>
-  </nav>
-);
+const Navigation: React.FC<NavigationProps> = ({ title, links }) => {
+  const { user } = useSession()
+  const userRole = user?.role || []
+
+  return (
+    <nav>
+      <div className="mb-2">
+        <h2 className="text-xs font-bold font-sans text-muted px-4">{title}</h2>
+      </div>
+      <ul className="mb-8">
+        {links.filter(({ roleVisibleTo }) => roleVisibleTo
+          ? userRole?.includes(roleVisibleTo)
+          : true).map((link, index) => (
+            <NavLi key={index} {...link} />
+          ))}
+      </ul>
+    </nav>
+  )
+};
 
 export default Navigation;

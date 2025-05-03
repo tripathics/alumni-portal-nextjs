@@ -60,7 +60,7 @@ export const ProfileMenu: React.FC<{
                 <div className="px-3 py-2 text-sm text-center text-muted">
                   {user.email}
                 </div>
-                {profileIncomplete && (
+                {profileIncomplete && user.role.includes('user') && (
                   <Button
                     variant="outline"
                     className="relative bg-card text-foreground/80 justify-left w-full"
@@ -78,7 +78,7 @@ export const ProfileMenu: React.FC<{
                 <div>
                   <ul className="flex flex-col items-stretch">
                     {userLinks
-                      .filter((link) => user.role.includes(link.role))
+                      .filter(({ role }) => role ? user.role.includes(role) : true)
                       .map(({ href, label, Icon }, index) => (
                         <li key={index}>
                           <Link
@@ -112,10 +112,12 @@ export const ProfileMenu: React.FC<{
           </Card>
         </PopoverContent>
       </Popover>
-      <CompleteProfileSetup
-        modalOpen={profileCompletionModalOpen && !!profileIncomplete}
-        setModalOpen={setProfileCompletionModalOpen}
-      />
+      {user.role.includes("user") && (
+        <CompleteProfileSetup
+          modalOpen={profileCompletionModalOpen && !!profileIncomplete}
+          setModalOpen={setProfileCompletionModalOpen}
+        />
+      )}
     </>
   ) : (
     <div className="hidden md:flex gap-4 items-center">

@@ -43,9 +43,8 @@ export const educationFormNITAPSchema: SchemaField[] = [
   },
   {
     name: "end_date",
-    label: "End date",
+    label: "End date (leave empty if you are currently pursuing here)",
     type: "date",
-    required: "End date is required",
   },
   { name: "description", label: "Description", type: "textarea" },
 ];

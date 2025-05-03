@@ -1,40 +1,43 @@
 "use client";
-import Navigation from "@/components/custom-ui/Dashboard/Navigation";
+import Navigation, { NavigationProps } from "@/components/custom-ui/Dashboard/Navigation";
 import { useSessionApi } from "@/state/session";
 import {
   BookIcon,
   Briefcase as BriefcaseIcon,
   LogOutIcon,
   SettingsIcon,
-  User as UserIcon,
+  UserRoundIcon,
   UserRoundCheck,
 } from "lucide-react";
 
 export const Sidebar: React.FC = () => {
   const { logout } = useSessionApi();
 
-  const navigations = [
+  const navigations: NavigationProps[] = [
     {
       title: "Profile",
       links: [
         {
           name: "Personal Profile",
           path: `/profile` + "",
-          Icon: UserIcon,
+          Icon: UserRoundIcon,
         },
         {
           name: "Education",
           path: `/profile/` + "education",
+          roleVisibleTo: 'user',
           Icon: BookIcon,
         },
         {
           name: "Experience",
           path: `/profile/` + "experience",
+          roleVisibleTo: 'user',
           Icon: BriefcaseIcon,
         },
         {
           name: "Alumni membership",
           path: `/profile/` + "alumni-membership",
+          roleVisibleTo: 'user',
           Icon: UserRoundCheck,
         },
       ],

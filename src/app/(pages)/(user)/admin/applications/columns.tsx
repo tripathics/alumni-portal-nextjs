@@ -123,6 +123,7 @@ const ApplicationDetails: React.FC<{
     onSuccess: (data) => {
       if (data) toast.info(data.message)
       queryClient.invalidateQueries({ queryKey: [queryKey.applications] })
+      queryClient.invalidateQueries({ queryKey: [queryKey.alumniList] })
       handleSuccess?.()
     }
   })

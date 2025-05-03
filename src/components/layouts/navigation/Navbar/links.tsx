@@ -6,11 +6,11 @@ export const userLinks: {
   Icon: LucideIcon;
   label: string;
   href: string;
-  role: UserRole;
+  role?: UserRole;
 }[] = [
-  { Icon: UserRound, label: "Profile", href: "/profile", role: "user" },
-  { Icon: UserCog2, label: "Admin", href: "/admin", role: "admin" },
-];
+    { Icon: UserRound, label: "Profile", href: "/profile" },
+    { Icon: UserCog2, label: "Admin", href: "/admin", role: "admin" },
+  ];
 
 export const links = [
   { label: "Home", href: "/" },
