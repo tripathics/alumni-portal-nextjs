@@ -8,5 +8,6 @@ export const queryKey = {
   application: "application",
   applications: "applications",
   heroSection: "hero-section",
-  alumniList: "alumni-list"
+  alumniList: "alumni-list",
+  usersList: "users-list",
 };

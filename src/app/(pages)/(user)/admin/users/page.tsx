@@ -1,14 +1,15 @@
 "use client";
 import getUsers from "@/lib/actions/admin/getUsers";
-import { User, columns } from "./columns";
+import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { queryKey } from "@/lib/constants/queryKey";
 
-async function getData(): Promise<User[]> {
-  try {
-    const data = await getUsers();
-    if (!data) return [];
-    return data.users.map((user) => ({
+export default function Users() {
+  const { data: users, isLoading } = useQuery({
+    queryKey: [queryKey.usersList],
+    queryFn: getUsers,
+    select: (data) => !data ? [] : data.users.map((user) => ({
       id: user.id,
       avatar: user.avatar,
       name: user.first_name
@@ -16,39 +17,17 @@ async function getData(): Promise<User[]> {
         : "User",
       email: user.email,
       role: user.role,
-    }));
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
-
-export default function Users() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setLoading(true);
-        const data = await getData();
-        setUsers(data);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
-
+    }))
+  })
   return (
     <div>
       <header>
         <h2 className="mb-4">Users</h2>
       </header>
-      {loading ? (
+      {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <DataTable columns={columns} data={users} />
+        <DataTable columns={columns} data={users || []} />
       )}
     </div>
   );

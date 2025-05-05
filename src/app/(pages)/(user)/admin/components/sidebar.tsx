@@ -4,7 +4,6 @@ import {
   Database,
   LayoutDashboard,
   NotepadText,
-  UserRoundCheck,
   UsersRound,
 } from "lucide-react";
 
@@ -35,7 +34,6 @@ export const Sidebar: React.FC = () => {
       title: "User Management",
       links: [
         { name: "Users", path: `/admin/` + "users", Icon: UsersRound },
-        { name: "Roles", path: `/admin/` + "roles", Icon: UserRoundCheck },
       ],
     },
     {

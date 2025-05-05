@@ -280,7 +280,7 @@ const Page = () => {
             </TableHeader>
             <TableBody>
               <TableRow>
-                <TableCell>
+                <TableCell className="align-top">
                   <p>{profile.address}</p>
                   <p>
                     {profile.city}, {profile.state}
@@ -289,7 +289,7 @@ const Page = () => {
                     {profile.country} {profile.pincode}
                   </p>
                 </TableCell>
-                <TableCell>
+                <TableCell className="align-top">
                   <p>{profile.email}</p>
                   <p>{profile.alt_email}</p>
                   <p>{profile.phone}</p>
