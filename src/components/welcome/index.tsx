@@ -21,19 +21,10 @@ const WelcomeExperience = () => {
   const formDivRef = React.useRef<HTMLDivElement>(null);
 
   const changePage = (direction: "next" | "prev" = "next") => {
-    setPage((prev) =>
-      direction === "next"
-        ? prev + 1 < welcomeExperienceSections.length - 1
-          ? prev + 1
-          : prev
-        : prev - 1 < 0
-        ? 0
-        : prev - 1
-    );
     setPage((prev) => {
-      if (prev + 1 >= welcomeExperienceSections.length - 1 || prev - 1 < 0)
-        return prev;
       const next = direction === "next" ? prev + 1 : prev - 1;
+      if (next > welcomeExperienceSections.length || next < 0)
+        return prev;
       formDivRef.current?.scrollTo(0, 0);
       return next;
     });
