@@ -135,7 +135,11 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
     eventEmitter.on("unauthorized", () => {
       if (user) clearUser();
       toast.error("Session expired.");
-      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      const redirectQuery =
+        !pathname.includes('login') || !pathname.includes('register')
+          ? `?redirect=${encodeURIComponent(pathname)}`
+          : ''
+      router.push(`/login${redirectQuery}`);
     });
     return () => {
       eventEmitter.off("unauthorized");

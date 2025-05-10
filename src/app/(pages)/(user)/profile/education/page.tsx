@@ -29,7 +29,7 @@ import { Button } from "@/components/ui/button";
 import { ProfileTableRowSkeleton } from "@/components/custom-ui/Skeletons/Table";
 import { toast } from "react-toastify";
 // import Image from "next/image";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKey } from "@/lib/constants/queryKey";
 import {
   Dialog,
@@ -37,6 +37,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog";
+import useSessionEnabledQuery from "@/hooks/queries/useUserEnabledQuery";
 
 interface EducationFormProps {
   onSubmit: (data: FieldValues) => void;
@@ -132,7 +133,7 @@ const Education: React.FC = () => {
 
   const queryClient = useQueryClient();
 
-  const educationQuery = useQuery({
+  const educationQuery = useSessionEnabledQuery({
     queryKey: [queryKey.education],
     queryFn: fetchEducationApi,
   });

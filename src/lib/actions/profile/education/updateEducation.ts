@@ -6,9 +6,9 @@ const updateEducation = async (
   data: EducationType
 ): Promise<
   | {
-      message: string;
-      success: boolean;
-    }
+    message: string;
+    success: boolean;
+  }
   | undefined
 > => {
   try {

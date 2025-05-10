@@ -12,13 +12,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { cva } from "class-variance-authority";
 
-const alertStyles = cva("flex items-start border mb-6 last:mb-0", {
+const alertStyles = cva("flex items-start border-2 mb-6 last:mb-0", {
   variants: {
     severity: {
-      info: "border-blue-400 text-blue-600 dark:text-blue-500",
-      success: "border-green-400 text-green-700",
-      warning: "border-yellow-400 text-yellow-700",
-      error: "border-red-400 text-red-700",
+      info: "border-info bg-info/5",
+      success: "border-success bg-success/5",
+      warning: "border-warning bg-warning/5",
+      error: "border-error bg-error/5",
     },
   },
   defaultVariants: {
@@ -46,18 +46,20 @@ const Alert: React.FC<AlertProps> = ({
     warning: WarningTriangle,
     info: InfoCircle,
   }[severity];
+  const iconStyle = {
+    error: "text-error",
+    success: "text-success",
+    warning: "text-warning",
+    info: "text-info",
+  }[severity];
 
   return (
     (isOpen || (onClose === undefined && isOpen === undefined)) && (
       <Card role="alert" className={cx(alertStyles({ severity }), className)}>
         <CardContent className="flex grow p-4">
-          <AlertIcon className="shrink-0" width={24} height={24} />
+          <AlertIcon className={cx("shrink-0", iconStyle)} width={24} height={24} />
           <div className="relative ml-4 font-medium grow">
-            <p
-              className={cx({
-                ["pr-6"]: !!onClose,
-              })}
-            >
+            <p className={cx({ ["pr-6"]: !!onClose })}>
               {children}
             </p>
             {onClose && (

@@ -8,10 +8,10 @@ const alumniMembershipSubmit = async (
   data: AlumniMembershipFormSubmissionType
 ): Promise<
   | {
-      message: string;
-      success: boolean;
-      application: MembershipApplicationAcknowledgementType;
-    }
+    message: string;
+    success: boolean;
+    application: MembershipApplicationAcknowledgementType;
+  }
   | undefined
 > => {
   try {
@@ -38,7 +38,7 @@ const alumniMembershipSubmit = async (
     });
     return response.data;
   } catch (error) {
-    if ((error as AxiosError).response?.status === 401) {
+    if (error instanceof AxiosError) {
       const err = error as AxiosError<{ message: string }>;
       throw new Error(err.response?.data.message || err.message);
     } else {

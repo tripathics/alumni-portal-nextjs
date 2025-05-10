@@ -16,7 +16,7 @@ import SchemaForm from "@/components/forms";
 import personalDetailsFormSchema from "@/lib/schemas/formSchema/personalDetails";
 import { FieldValues } from "react-hook-form";
 import updateProfile from "@/lib/actions/profile/updateProfile";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ProfileSkeleton from "@/components/custom-ui/Skeletons/Profile";
 import {
   Dialog,
@@ -25,13 +25,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import readProfile from "@/lib/actions/profile/readProfile";
 import { queryKey } from "@/lib/constants/queryKey";
 import AvatarUpload from "@/components/forms/AvatarUpload";
 import axios from "axios";
 import updateAvatarNew from "@/lib/actions/profile/updateAvatarNew";
 import getUploadUrlApi from "@/lib/actions/media/getUploadUrl";
-import { useSession, useSessionApi } from "@/state/session";
+import { useSessionApi } from "@/state/session";
 import { toast } from "react-toastify";
 import {
   Table,
@@ -41,6 +40,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import useReadProfile from "@/hooks/queries/useReadProfile";
 
 interface PersonalDetailsFormProps {
   prefillData: FieldValues;
@@ -67,18 +67,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({
 const Page = () => {
   const queryClient = useQueryClient();
   const { fetchProfileCompletionStatus, fetchUser } = useSessionApi();
-  const { user } = useSession();
-
-  const profileQuery = useQuery({
-    queryFn: async () => {
-      if (!user) return null;
-      const data = await readProfile();
-      return data?.user;
-    },
-    queryKey: [queryKey.profile],
-    enabled: !!user,
-  });
-
+  const profileQuery = useReadProfile()
   const profile = profileQuery.data || null;
   const [updateFormModalOpen, setUpdateFormModalOpen] = React.useState(false);
   const [updateAvatarModalOpen, setUpdateAvatarModalOpen] =

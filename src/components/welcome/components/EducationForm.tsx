@@ -2,12 +2,13 @@ import SchemaForm, { Select } from "@/components/forms";
 import { educationFormNITAPSchema } from "@/lib/schemas/formSchema/educationDetails";
 import { FieldValues } from "react-hook-form";
 import React from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import updateEducation from "@/lib/actions/profile/education/updateEducation";
 import { EducationType } from "@/types/Profile.type";
 import { queryKey } from "@/lib/constants/queryKey";
 import fetchNitapEducation from "@/lib/actions/profile/education/fetchNitapEducation";
 import { LoaderCircle } from "lucide-react";
+import useSessionEnabledQuery from "@/hooks/queries/useUserEnabledQuery";
 
 interface EducationFormProps {
   ref: React.Ref<{ submit: () => void }>;
@@ -19,7 +20,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ ref }) => {
 
   const queryClient = useQueryClient();
 
-  const educationAtNitapQuery = useQuery({
+  const educationAtNitapQuery = useSessionEnabledQuery({
     queryKey: [queryKey.nitapEducation],
     queryFn: async () => {
       const data = await fetchNitapEducation();
@@ -43,7 +44,8 @@ export const EducationForm: React.FC<EducationFormProps> = ({ ref }) => {
 
   const handleSubmit = (data: FieldValues) => {
     return new Promise((resolve, reject) => {
-      updateEducationMutation.mutate(data as EducationType, {
+      updateEducationMutation.mutate(
+        data as EducationType, {
         onSuccess: () => {
           resolve(data);
         },

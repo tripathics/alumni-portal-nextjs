@@ -18,10 +18,6 @@ export const OTPForm: React.FC<{
           name: "email",
           label: "Enter your email",
           required: "Email is required",
-          pattern: {
-            value: /^(?!.*@nitap\.ac\.in).*$/,
-            message: "Invalid email or @nitap.ac.in domain is not allowed",
-          },
         },
       ]}
       onSubmit={onSubmit}
@@ -46,10 +42,6 @@ export const VerifyForm: React.FC<{
         name: "email",
         label: "Enter your email",
         required: "Email is required",
-        pattern: {
-          value: /^(?!.*@nitap\.ac\.in).*$/,
-          message: "Invalid email or @nitap.ac.in domain is not allowed",
-        },
         disabled: true,
       },
       {
@@ -77,10 +69,6 @@ export const ResetPasswordForm: React.FC<{
         name: "email",
         label: "Enter your email",
         required: "Email is required",
-        pattern: {
-          value: /^(?!.*@nitap\.ac\.in).*$/,
-          message: "Invalid email or @nitap.ac.in domain is not allowed",
-        },
         disabled: true,
       },
       {

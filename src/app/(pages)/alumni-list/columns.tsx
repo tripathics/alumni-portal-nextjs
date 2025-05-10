@@ -12,7 +12,7 @@ export const columns: ColumnDef<FetchedAlumni>[] = [
       const alumni = row.original
       return (
         <div className="flex items-center gap-4">
-          <Avatar avatar={alumni.avatar} size="3.5rem" />
+          <Avatar avatar={alumni.avatar} size="3rem" />
           <div className="space-y-1">
             <p className="text-base font-semibold">{alumni.name}</p>
             <p>{alumni.nitap_degree} - {alumni.nitap_discipline}, {alumni.nitap_graduation_year}</p>

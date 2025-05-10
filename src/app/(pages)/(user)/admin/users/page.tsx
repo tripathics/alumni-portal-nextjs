@@ -2,11 +2,11 @@
 import getUsers from "@/lib/actions/admin/getUsers";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import { useQuery } from "@tanstack/react-query";
+import useSessionEnabledQuery from "@/hooks/queries/useUserEnabledQuery"
 import { queryKey } from "@/lib/constants/queryKey";
 
 export default function Users() {
-  const { data: users, isLoading } = useQuery({
+  const { data: users, isLoading } = useSessionEnabledQuery({
     queryKey: [queryKey.usersList],
     queryFn: getUsers,
     select: (data) => !data ? [] : data.users.map((user) => ({

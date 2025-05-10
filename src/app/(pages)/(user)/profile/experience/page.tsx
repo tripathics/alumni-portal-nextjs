@@ -1,7 +1,7 @@
 "use client";
 import SchemaForm from "@/components/forms";
 import { Button } from "@/components/ui/button";
-import { Pencil as EditPencil, CirclePlus as AddIcon } from "lucide-react";
+import { Pencil as EditPencil, CirclePlus as AddIcon, Building2 } from "lucide-react";
 import { useState } from "react";
 import { experienceFormSchema } from "@/lib/schemas/formSchema/experienceDetails";
 import { FieldValues } from "react-hook-form";
@@ -20,16 +20,15 @@ import {
 import updateExperience from "@/lib/actions/profile/experience/updateExperience";
 import { toast } from "react-toastify";
 import { ProfileTableRowSkeleton } from "@/components/custom-ui/Skeletons/Table";
-import Image from "next/image";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useSessionEnabledQuery from "@/hooks/queries/useUserEnabledQuery"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKey } from "@/lib/constants/queryKey";
-import { useSession } from "@/state/session";
 
 interface ExperienceFormProps {
   onSubmit: (data: FieldValues) => void;
@@ -64,13 +63,8 @@ const ExperienceRow: React.FC<ExperienceRowProps> = ({
   return (
     <TableRow>
       <TableCell className="max-w-fit w-[66px]">
-        <div>
-          <Image
-            width={50}
-            height={50}
-            src="https://img.icons8.com/ios-filled/50/university.png"
-            alt="university"
-          />
+        <div className="bg-primary/10 p-4 rounded-full">
+          <Building2 className="text-primary w-6 h-6" strokeWidth={1.5} />
         </div>
       </TableCell>
       <TableCell>
@@ -104,9 +98,8 @@ const ExperienceRow: React.FC<ExperienceRowProps> = ({
 
 const Experience: React.FC = () => {
   const queryClient = useQueryClient();
-  const { user } = useSession();
 
-  const experienceQuery = useQuery({
+  const experienceQuery = useSessionEnabledQuery({
     queryKey: [queryKey.experience],
     queryFn: fetchExperiencesApi,
   });

@@ -1,4 +1,5 @@
 import {
+  Check,
   GraduationCap,
   UserRoundCheck,
   UserRoundPen,
@@ -8,6 +9,7 @@ import { EducationForm } from "./components/EducationForm";
 import { PersonalDetailsForm } from "./components/PersonalDetailsForm";
 import { AvatarUpload } from "./components/AvatarUpload";
 import { AlumniForm } from "./components/AlumniForm";
+import { Acknowledgement } from "./components/Acknowledgement";
 
 export const welcomeExperienceSections = [
   {
@@ -54,4 +56,16 @@ export const welcomeExperienceSections = [
     main: AlumniForm,
     btnText: "Submit",
   },
+  {
+    name: "acknowledgement",
+    header: {
+      title: "All set up!",
+      description:
+        "You can check the status of your applications by going to Profile -> Membership applications",
+      icon: Check,
+    },
+    main: Acknowledgement,
+    btnText: "Let's go",
+  }
 ];
+

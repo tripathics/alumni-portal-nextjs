@@ -39,9 +39,9 @@
   --color-palette-link-dark: hsl(208 100% 86%);
 
   /* status colors */
-  --color-palette-info: hsl(230 94% 60%);
+  --color-palette-info: hsl(221 28% 50%);
   --color-palette-success: hsl(142 72% 29%);
-  --color-palette-warning: hsl(35 92% 33%);
+  --color-palette-warning: hsl(3 50% 60%);
   --color-palette-error: hsl(0 74% 42%);
 
   --color-palette-destructive: hsl(0 84.2% 60.2%);
@@ -161,6 +161,10 @@
   h6 {
     @apply font-serif;
   }
+
+  option {
+    @apply bg-background;
+  }
 }
 
 @layer components {
@@ -180,7 +184,7 @@
   --toastify-icon-color-error: var(--color-error);
 }
 .Toastify__toast {
-  @apply rounded-full bg-palette-surface text-palette-foreground border border-palette-border shadow-sm;
+  @apply rounded-full bg-palette-surface text-palette-foreground border-2 border-palette-border shadow-sm;
 
   @variant dark {
     @apply bg-palette-surface-dark text-palette-foreground-dark border-palette-border-dark;

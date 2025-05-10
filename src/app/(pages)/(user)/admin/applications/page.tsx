@@ -3,11 +3,11 @@ import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { Spinner } from "@/components/ui/spinner";
 import fetchMembershipApplications from "@/lib/actions/admin/fetchMembershipApplications";
-import { useQuery } from "@tanstack/react-query";
 import { queryKey } from "@/lib/constants/queryKey";
+import useSessionEnabledQuery from "@/hooks/queries/useUserEnabledQuery";
 
 export default function Applications() {
-  const { data: applications, isLoading } = useQuery({
+  const { data: applications, isLoading } = useSessionEnabledQuery({
     queryKey: [queryKey.applications],
     queryFn: fetchMembershipApplications,
     select: (data) => !data ? [] : data.map((d) => ({

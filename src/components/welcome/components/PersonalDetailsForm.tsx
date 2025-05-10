@@ -1,14 +1,15 @@
+"use client"
 import SchemaForm from "@/components/forms";
 import personalDetailsFormSchema from "@/lib/schemas/formSchema/personalDetails";
 import { FieldValues } from "react-hook-form";
 import { Ref } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import readProfile from "@/lib/actions/profile/readProfile";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useReadProfile from "@/hooks/queries/useReadProfile";
 import { LoaderCircle } from "lucide-react";
 import updateProfile from "@/lib/actions/profile/updateProfile";
 import { PersonalDetailsType } from "@/types/Profile.type";
 import { queryKey } from "@/lib/constants/queryKey";
-import { useSession, useSessionApi } from "@/state/session";
+import { useSessionApi } from "@/state/session";
 
 export const PersonalDetailsForm: React.FC<{
   ref: Ref<{ submit: () => void }>;
@@ -16,16 +17,8 @@ export const PersonalDetailsForm: React.FC<{
 }> = ({ ref, selectedAvatarFile }) => {
   const queryClient = useQueryClient();
   const { fetchUser } = useSessionApi();
-  const { user } = useSession();
 
-  const profileQuery = useQuery({
-    queryFn: async () => {
-      const data = await readProfile();
-      return data?.user;
-    },
-    queryKey: [queryKey.profile],
-  });
-
+  const profileQuery = useReadProfile();
   const updateProfileMutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: () => {

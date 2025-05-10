@@ -11,9 +11,9 @@ const updateProfile = async ({
   avatarFile?: File;
 }): Promise<
   | {
-      success: boolean;
-      message: string;
-    }
+    success: boolean;
+    message: string;
+  }
   | undefined
 > => {
   try {

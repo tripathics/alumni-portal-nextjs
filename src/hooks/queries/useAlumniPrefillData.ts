@@ -1,14 +1,14 @@
 import alumniPrefill from "@/lib/actions/alumni/alumniPrefill";
 import { queryKey } from "@/lib/constants/queryKey";
-import { useQuery } from "@tanstack/react-query";
+import useSessionEnabledQuery from "./useUserEnabledQuery";
 
 const useAlumniPrefillData = () => {
-  const { data, error, isLoading } = useQuery({
+  const alumniPrefillQuery = useSessionEnabledQuery({
     queryFn: alumniPrefill,
     queryKey: [queryKey.alumniPrefill],
   });
 
-  return { data, error, isLoading };
+  return alumniPrefillQuery;
 };
 
 export default useAlumniPrefillData;

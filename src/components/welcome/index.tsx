@@ -23,7 +23,7 @@ const WelcomeExperience = () => {
   const changePage = (direction: "next" | "prev" = "next") => {
     setPage((prev) => {
       const next = direction === "next" ? prev + 1 : prev - 1;
-      if (next > welcomeExperienceSections.length || next < 0)
+      if (next >= welcomeExperienceSections.length || next < 0)
         return prev;
       formDivRef.current?.scrollTo(0, 0);
       return next;
@@ -37,9 +37,9 @@ const WelcomeExperience = () => {
       if (page === 0) setAvatar(data?.avatar || null);
       changePage();
     } catch (e) {
-      if ((e as Error).message === "Form validation failed") {
+      if ((e as Error).message === "Form validation failed")
         formDivRef.current?.scrollTo(0, 0);
-      }
+      setIsLoading(false)
     } finally {
       if (page < welcomeExperienceSections.length - 1) setIsLoading(false);
     }
