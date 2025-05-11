@@ -4,20 +4,13 @@ import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import useSessionEnabledQuery from "@/hooks/queries/useUserEnabledQuery"
 import { queryKey } from "@/lib/constants/queryKey";
+import { LoaderCircle } from "lucide-react";
 
 export default function Users() {
-  const { data: users, isLoading } = useSessionEnabledQuery({
+  const { data: users = [], isLoading } = useSessionEnabledQuery({
     queryKey: [queryKey.usersList],
     queryFn: getUsers,
-    select: (data) => !data ? [] : data.users.map((user) => ({
-      id: user.id,
-      avatar: user.avatar,
-      name: user.first_name
-        ? `${user.title} ${user.first_name} ${user.last_name}`
-        : "User",
-      email: user.email,
-      role: user.role,
-    }))
+    select: (data) => data?.users
   })
   return (
     <div>
@@ -25,9 +18,9 @@ export default function Users() {
         <h2 className="mb-4">Users</h2>
       </header>
       {isLoading ? (
-        <p>Loading...</p>
+        <LoaderCircle className="animate-spin" />
       ) : (
-        <DataTable columns={columns} data={users || []} />
+        <DataTable columns={columns} data={users} />
       )}
     </div>
   );

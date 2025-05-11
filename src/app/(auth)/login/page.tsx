@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import AuthHeader from "@/components/layouts/AuthHeader";
 import { useSessionApi } from "@/state/session";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 const Login = () => {
   const router = useRouter();
@@ -38,6 +39,12 @@ const Login = () => {
       router.push("/profile");
     }
   };
+
+  useEffect(() => {
+    return () => {
+      login.reset()
+    }
+  }, [])
 
   return (
     <div className="container">

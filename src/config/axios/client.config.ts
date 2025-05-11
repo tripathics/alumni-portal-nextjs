@@ -21,7 +21,8 @@ axiosInstance.interceptors.response.use(
     if (
       err.response.status === 401 &&
       err.response.config &&
-      !err.response.config.url?.endsWith("/u")
+      !err.response.config.url?.endsWith("/u") &&
+      !err.response.config.url?.endsWith("/login")
     ) {
       eventEmitter.emit("unauthorized");
     }

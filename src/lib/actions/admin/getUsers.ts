@@ -1,19 +1,9 @@
 import axios from "@/config/axios/client.config";
-import { TitleType, UserRole } from "@/types/User.type";
+import { UserType } from "@/types/User.type";
 import { AxiosError } from "axios";
 
 const getUsers = async (): Promise<
-  | {
-      users: {
-        id: string;
-        email: string;
-        title: TitleType;
-        first_name: string;
-        last_name: string;
-        avatar: string | null;
-        role: UserRole[];
-      }[];
-    }
+  | { users: UserType[]; }
   | undefined
 > => {
   try {

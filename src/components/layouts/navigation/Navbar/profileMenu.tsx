@@ -44,7 +44,7 @@ export const ProfileMenu: React.FC<{
                 ["bg-primary/25"]: open,
                 ["hover:bg-primary/10"]: !open,
                 ["relative before:absolute before:z-10 before:content-[''] before:bg-primary before:border before:border-background before:rounded-full before:w-2 before:h-2 after:absolute after:content-[''] after:bg-primary after:rounded-full after:animate-ping after:w-2 after:h-2 after:top-1 after:right-1 after:brightness-125 before:top-1 before:right-1 before:brightness-150"]:
-                  profileIncomplete,
+                  profileIncomplete && user.role.includes('user'),
               }
             )}
           >

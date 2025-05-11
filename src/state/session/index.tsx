@@ -66,20 +66,18 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
   const loginAction = useAction({
     apiAction: loginApi,
     onSuccess: (data) => {
-      if (data?.user) {
-        setUser(data.user);
-        const first_name = data.user.first_name;
-        toast.dismiss();
-        toast.success(
-          "Welcome back" + `${!!first_name ? `, ${first_name}!` : "!"}`,
-          {
-            autoClose: 5000,
-            closeButton: false,
-            closeOnClick: true,
-          }
-        );
-        fetchProfileCompletionStatus();
+      if (!data?.user) return;
+      setUser(data.user);
+      const first_name = data.user.first_name;
+      toast.dismiss();
+      if (first_name) {
+        toast.success(`Welcome back ${first_name}`, {
+          autoClose: 5000,
+          closeButton: false,
+          closeOnClick: true,
+        })
       }
+      fetchProfileCompletionStatus();
     },
   });
 
@@ -136,7 +134,7 @@ const SessionProvider = ({ children }: React.PropsWithChildren<object>) => {
       if (user) clearUser();
       toast.error("Session expired.");
       const redirectQuery =
-        !pathname.includes('login') || !pathname.includes('register')
+        !(pathname.includes('login') || pathname.includes('register'))
           ? `?redirect=${encodeURIComponent(pathname)}`
           : ''
       router.push(`/login${redirectQuery}`);
