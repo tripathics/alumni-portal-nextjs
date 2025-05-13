@@ -4,8 +4,12 @@ import { UserRole, UserType } from "@/types/User.type";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import React, { useImperativeHandle, useRef, useState } from "react";
 import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Check, Info, Plus, Undo, X } from "lucide-react";
+import { Info, Plus, Undo, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { assignRoles, ManageRoleResponse, revokeRoles } from "@/lib/actions/admin/users/manageRoles";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { queryKey } from "@/lib/constants/queryKey";
 
 const roleMap: Record<UserRole, {
   id: UserRole;
@@ -40,9 +44,44 @@ const ManageRolesDialog: React.FC<{
   user: UserType;
 }> = ({ open, onOpenChange, user }) => {
   const formRef = useRef<{ submit: () => UserRole[] }>(null)
-  const [mode, setMode] = useState<string>("assign");
+  const [mode, setMode] = useState<"assign" | "revoke">("assign");
+  const queryClient = useQueryClient()
 
-  // TODO: Integrate assign/revoke role API
+  const onSuccess = (data: ManageRoleResponse) => {
+    toast.success(data?.message)
+    onOpenChange(false)
+    queryClient.invalidateQueries({
+      queryKey: [queryKey.usersList]
+    })
+  }
+  const onError = (error: Error) => {
+    toast.error(error.message)
+  }
+
+  const assignRolesMutation = useMutation({
+    onSuccess,
+    onError,
+    mutationFn: assignRoles,
+  })
+  const revokeRolesMutation = useMutation({
+    onSuccess,
+    onError,
+    mutationFn: revokeRoles,
+  })
+
+  const handleSubmit = (
+    data: {
+      userId: string;
+      roles: UserRole[];
+    },
+    mode: "assign" | "revoke"
+  ) => {
+    if (mode === "assign") {
+      assignRolesMutation.mutate(data)
+    } else {
+      revokeRolesMutation.mutate(data)
+    }
+  }
 
   return (
     <Dialog
@@ -58,7 +97,10 @@ const ManageRolesDialog: React.FC<{
           <p className="text-xs text-muted mb-1">User account</p>
           <p>{user.email}</p>
         </div>
-        <Tabs value={mode} onValueChange={setMode}>
+        <Tabs
+          onValueChange={(value) => setMode(value as "assign" | "revoke")}
+          value={mode}
+        >
           <TabsList>
             <TabsTrigger value="assign">Assign roles</TabsTrigger>
             <TabsTrigger value="revoke">Revoke roles</TabsTrigger>
@@ -74,10 +116,17 @@ const ManageRolesDialog: React.FC<{
           <DialogClose asChild>
             <Button variant="ghost">Cancel</Button>
           </DialogClose>
-          <Button onClick={() => {
-            const data = formRef.current?.submit();
-            console.log(data);
-          }}>
+          <Button
+            onClick={() => {
+              const roles = formRef.current?.submit();
+              if (!roles) return;
+              handleSubmit({ userId: user.id, roles }, mode)
+            }}
+            loading={
+              revokeRolesMutation.isPending ||
+              assignRolesMutation.isPending
+            }
+          >
             {mode === "assign" ? "Assign role" : "Revoke role"}
           </Button>
         </DialogFooter>

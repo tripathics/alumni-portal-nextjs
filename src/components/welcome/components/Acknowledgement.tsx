@@ -13,7 +13,7 @@ const ListItem: React.FC<{
 
 export const Acknowledgement: React.FC<{
   ref?: React.Ref<{ submit: () => void }>;
-}> = ({ ref }) => {
+}> = () => {
   const { profileCompletionStatus } = useSession()
 
   return (

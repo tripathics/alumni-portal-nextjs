@@ -1,7 +1,7 @@
 import SchemaForm from "@/components/forms";
 import { Button } from "@/components/ui/button";
 import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
-import changePassword from "@/lib/actions/admin/changePassword";
+import changePassword from "@/lib/actions/admin/users/changePassword";
 import { UserType } from "@/types/User.type";
 import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useMutation } from "@tanstack/react-query";

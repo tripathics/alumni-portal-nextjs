@@ -1,7 +1,7 @@
 import Alert from "@/components/custom-ui/Alert";
 import { Button } from "@/components/ui/button";
 import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
-import deleteAccount from "@/lib/actions/admin/deleteAccount";
+import deleteAccount from "@/lib/actions/admin/users/deleteAccount";
 import { queryKey } from "@/lib/constants/queryKey";
 import { UserType } from "@/types/User.type";
 import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";

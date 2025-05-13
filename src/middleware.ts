@@ -32,7 +32,7 @@ export async function middleware(req: NextRequest) {
     const resJson = await response.json()
     const roles: UserRole[] = resJson.decoded.role || [];
 
-    const isUser = roles.includes("user")
+    const isUser = roles.includes("user") || roles.includes("alumni")
     const isAdmin = roles.includes("admin")
 
     const isAllowed =

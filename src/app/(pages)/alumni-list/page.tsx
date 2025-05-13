@@ -5,6 +5,7 @@ import { columns } from "./columns";
 import { useQuery } from "@tanstack/react-query";
 import { queryKey } from "@/lib/constants/queryKey";
 import fetchAlumni from "@/lib/actions/public/fetchAlumni";
+import { LoaderCircle } from "lucide-react";
 
 const Page: React.FC = () => {
   const { data = [], isLoading } = useQuery({
@@ -20,11 +21,12 @@ const Page: React.FC = () => {
       />
 
       <div className="page-main container">
-        {!data ? (
-          <p>No data found</p>
-        ) : (
-          <DataTable columns={columns} data={data} />
-        )}
+        {isLoading
+          ? <LoaderCircle className="animate-spin" />
+          : data
+            ? <DataTable columns={columns} data={data} />
+            : <p>No data found</p>
+        }
       </div>
     </>
   )

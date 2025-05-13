@@ -1,5 +1,5 @@
 "use client";
-import getUsers from "@/lib/actions/admin/getUsers";
+import getUsers from "@/lib/actions/admin/users/getUsers";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import useSessionEnabledQuery from "@/hooks/queries/useUserEnabledQuery"
@@ -17,11 +17,10 @@ export default function Users() {
       <header>
         <h2 className="mb-4">Users</h2>
       </header>
-      {isLoading ? (
-        <LoaderCircle className="animate-spin" />
-      ) : (
-        <DataTable columns={columns} data={users} />
-      )}
+      {isLoading
+        ? <LoaderCircle className="animate-spin" />
+        : <DataTable columns={columns} data={users} />
+      }
     </div>
   );
 }

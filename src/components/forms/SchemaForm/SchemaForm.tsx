@@ -11,7 +11,7 @@ import { Ref, useImperativeHandle } from "react";
 
 interface SchemaFormProps {
   schema: SchemaField[];
-  onSubmit: (data: FieldValues) => Promise<void>;
+  onSubmit: (data: FieldValues) => Promise<unknown> | unknown;
   actions?: React.ReactNode;
   loading?: boolean;
   prefillData?: FieldValues;
