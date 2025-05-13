@@ -127,7 +127,7 @@ const ManageRolesDialog: React.FC<{
               assignRolesMutation.isPending
             }
           >
-            {mode === "assign" ? "Assign role" : "Revoke role"}
+            {mode === "assign" ? "Assign roles" : "Revoke roles"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -161,35 +161,37 @@ const AssignRoleForm: React.FC<{
   }
 
   return (
-    <ul>
-      {Object.keys(rolesToAssign).map(r => {
-        const id = r as UserRole;
-        const assign = rolesToAssign[id]
-        const { label, description } = roleMap[id]
-        return (
-          <li className="flex flex-row justify-between items-center" key={r}>
-            <div>
-              {assign ? <span>{label}</span> : <span className="text-muted">{label}</span>}
-              <Popover>
-                <PopoverTrigger>
-                  <Info size="1rem" className="mx-1 text-muted" />
-                </PopoverTrigger>
-                <PopoverContent className="text-sm max-w-sm">
-                  {description}
-                </PopoverContent>
-              </Popover>
-            </div>
-            <Button
-              onClick={() => toggleMarkForRevoke(id)}
-              aria-label={assign ? "Mark for revocation" : "Undo revoke"}
-              variant="ghost" size="icon"
-            >
-              {assign ? <Undo /> : <Plus />}
-            </Button>
-          </li>
-        )
-      })}
-    </ul>
+    !!Object.keys(rolesToAssign).length ? (
+      <ul className="my-2">
+        {Object.keys(rolesToAssign).map(r => {
+          const id = r as UserRole;
+          const assign = rolesToAssign[id]
+          const { label, description } = roleMap[id]
+          return (
+            <li className="flex flex-row justify-between items-center" key={r}>
+              <div>
+                {assign ? <span>{label}</span> : <span className="text-muted">{label}</span>}
+                <Popover>
+                  <PopoverTrigger>
+                    <Info size="1rem" className="mx-1 text-muted" />
+                  </PopoverTrigger>
+                  <PopoverContent className="text-sm max-w-sm">
+                    {description}
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <Button
+                onClick={() => toggleMarkForRevoke(id)}
+                aria-label={assign ? "Mark for revocation" : "Undo revoke"}
+                variant="ghost" size="icon"
+              >
+                {assign ? <Undo /> : <Plus />}
+              </Button>
+            </li>
+          )
+        })}
+      </ul>
+    ) : <p className="my-2">No roles to assign</p>
   )
 }
 
@@ -216,35 +218,37 @@ const RevokeRoleForm: React.FC<{
   }
 
   return (
-    <ul>
-      {roles.map(r => {
-        const id = r as UserRole;
-        const revoke = rolesToRevoke[id]
-        const { label, description } = roleMap[id]
-        return (
-          <li className="flex flex-row justify-between items-center" key={r}>
-            <div>
-              {revoke ? <s className="text-warning">{label}</s> : <span>{label}</span>}
-              <Popover>
-                <PopoverTrigger>
-                  <Info size="1rem" className="mx-1 text-muted" />
-                </PopoverTrigger>
-                <PopoverContent className="text-sm max-w-sm">
-                  {description}
-                </PopoverContent>
-              </Popover>
-            </div>
-            <Button
-              onClick={() => toggleMarkForRevoke(id)}
-              aria-label={revoke ? "Mark for revocation" : "Undo revoke"}
-              variant="ghost" size="icon"
-            >
-              {revoke ? <Undo /> : <X />}
-            </Button>
-          </li>
-        )
-      })}
-    </ul>
+    !!Object.keys(rolesToRevoke).length ? (
+      <ul className="my-2">
+        {roles.map(r => {
+          const id = r as UserRole;
+          const revoke = rolesToRevoke[id]
+          const { label, description } = roleMap[id]
+          return (
+            <li className="flex flex-row justify-between items-center" key={r}>
+              <div>
+                {revoke ? <s className="text-warning">{label}</s> : <span>{label}</span>}
+                <Popover>
+                  <PopoverTrigger>
+                    <Info size="1rem" className="mx-1 text-muted" />
+                  </PopoverTrigger>
+                  <PopoverContent className="text-sm max-w-sm">
+                    {description}
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <Button
+                onClick={() => toggleMarkForRevoke(id)}
+                aria-label={revoke ? "Mark for revocation" : "Undo revoke"}
+                variant="ghost" size="icon"
+              >
+                {revoke ? <Undo /> : <X />}
+              </Button>
+            </li>
+          )
+        })}
+      </ul>
+    ) : <p className="my-2">This user has no roles to revoke</p>
   )
 }
 

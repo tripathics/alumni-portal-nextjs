@@ -68,7 +68,7 @@ const Page = () => {
   const queryClient = useQueryClient();
   const { fetchProfileCompletionStatus, fetchUser } = useSessionApi();
   const profileQuery = useReadProfile()
-  const profile = profileQuery.data || null;
+  const profile = profileQuery.data;
   const [updateFormModalOpen, setUpdateFormModalOpen] = React.useState(false);
   const [updateAvatarModalOpen, setUpdateAvatarModalOpen] =
     React.useState(false);
@@ -83,22 +83,26 @@ const Page = () => {
   });
 
   const updateAvatarMutation = useMutation({
-    mutationFn: async (file: File) => {
+    mutationFn: async (file: File | null) => {
       try {
-        const getUrlRes = await getUploadUrlApi(
-          "avatar",
-          file.name,
-          file.type,
-          file.size
-        );
-        const { key, url } = getUrlRes!;
+        let filename = null
+        if (file) {
+          const getUrlRes = await getUploadUrlApi(
+            "avatar",
+            file.name,
+            file.type,
+            file.size
+          );
+          const { key, url } = getUrlRes!;
+          filename = key;
 
-        await axios.put(url, file, {
-          headers: {
-            "Content-Type": file.type,
-          },
-        });
-        await updateAvatarNew(key);
+          await axios.put(url, file, {
+            headers: {
+              "Content-Type": file.type,
+            },
+          });
+        }
+        await updateAvatarNew(filename);
         toast.success("Avatar updated successfully");
       } catch (err) {
         if ((err as Error).message) {
@@ -114,12 +118,8 @@ const Page = () => {
     },
   });
 
-  if (profileQuery.isLoading) {
+  if (profileQuery.isLoading || !profile) {
     return <ProfileSkeleton />;
-  }
-
-  if (!profile) {
-    return <div>Error fetching profile data</div>;
   }
 
   return profile.registration_no ? (

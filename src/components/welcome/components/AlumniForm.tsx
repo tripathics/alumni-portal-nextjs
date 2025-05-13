@@ -7,11 +7,12 @@ import Alert from "@/components/custom-ui/Alert";
 import { alumniMembershipForm } from "@/lib/schemas/formSchema/alumniMembershipForm";
 import { AlumniMembershipFormSubmissionType } from "@/types/Alumni.type";
 import useSubmitMembershipForm from "@/hooks/mutations/useSubmitMembershipForm";
+import { Button } from "@/components/ui/button";
 
-interface EducationFormProps {
-  ref: React.Ref<{ submit: () => void }>;
+interface AlumniFormProps {
+  ref?: React.Ref<{ submit: () => void }>;
 }
-export const AlumniForm: React.FC<EducationFormProps> = ({ ref }) => {
+export const AlumniForm: React.FC<AlumniFormProps> = ({ ref }) => {
   const alumniPrefillDataQuery = useAlumniPrefillData();
   const membershipSubmitMutation = useSubmitMembershipForm()
 
@@ -41,7 +42,7 @@ export const AlumniForm: React.FC<EducationFormProps> = ({ ref }) => {
     );
   }
   if (!alumniPrefillDataQuery.data) {
-    return <Alert>Error fetching data</Alert>;
+    return null;
   }
 
   return (
@@ -54,7 +55,12 @@ export const AlumniForm: React.FC<EducationFormProps> = ({ ref }) => {
         schema={alumniMembershipForm}
         onSubmit={handleSubmit}
         submitRef={ref}
+        actions={(
+          <div className="flex gap-4 justify-end">
+            <Button size="lg">Submit application</Button>
+          </div >
+        )}
       />
-    </div>
+    </div >
   );
 };

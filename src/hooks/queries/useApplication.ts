@@ -1,7 +1,7 @@
 import {
   fetchApplicationById,
   fetchApplicationByIdAdmin,
-} from "@/lib/actions/admin/fetchApplicationById";
+} from "@/lib/actions/admin/membership-applications/fetchApplicationById";
 import { queryKey } from "@/lib/constants/queryKey";
 import { MembershipApplicationType } from "@/types/Membership.type";
 import { useQuery } from "@tanstack/react-query";

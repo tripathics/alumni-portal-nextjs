@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { MembershipApplcationStatus } from "@/types/Membership.type";
-import { fetchApplicationByIdAdmin } from "@/lib/actions/admin/fetchApplicationById";
-import updateApplicationStatus from "@/lib/actions/admin/updateApplicationStatus";
+import { fetchApplicationByIdAdmin } from "@/lib/actions/admin/membership-applications/fetchApplicationById";
+import updateApplicationStatus from "@/lib/actions/admin/membership-applications/updateApplicationStatus";
 import { getDateWithTime, getMonth, toTitleCase } from "@/lib/helper";
 import { Eye as EyeOpenIcon } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";

@@ -40,12 +40,6 @@ const Page = () => {
           <PresidentsMessageForm />
         </GridItemOption>
       </GridItem>
-      <GridItem
-        title="Coordinators"
-        description="Manage coordinators' details of the Alumni Assiociation"
-      >
-        <p>Here is the email content</p>
-      </GridItem>
     </div>
   );
 };

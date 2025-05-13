@@ -184,9 +184,10 @@
   --toastify-icon-color-error: var(--color-error);
 }
 .Toastify__toast {
-  @apply rounded-full bg-palette-surface text-palette-foreground border-2 border-palette-border shadow-sm;
+  @apply rounded-none bg-palette-surface text-palette-foreground border-2 border-palette-border shadow-sm;
 
   @variant dark {
     @apply bg-palette-surface-dark text-palette-foreground-dark border-palette-border-dark;
   }
 }
+

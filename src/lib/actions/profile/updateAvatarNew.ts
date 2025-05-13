@@ -2,12 +2,12 @@ import axios from "@/config/axios/client.config";
 import { AxiosError } from "axios";
 
 const updateAvatarNew = async (
-  avatar: string
+  avatar: string | null
 ): Promise<
   | {
-      success: boolean;
-      message: string;
-    }
+    success: boolean;
+    message: string;
+  }
   | undefined
 > => {
   try {

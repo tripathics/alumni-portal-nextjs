@@ -3,7 +3,8 @@ import { AxiosError } from "axios";
 
 const changePassword = async (data: {
   userId: string,
-  password: string
+  password: string,
+  confirmPassword: string,
 }): Promise<{
   message: string;
   success: boolean;

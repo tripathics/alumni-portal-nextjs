@@ -1,19 +1,25 @@
 import SchemaForm from "@/components/forms";
 import { Button } from "@/components/ui/button";
-import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
+import { DialogDescription, DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import changePassword from "@/lib/actions/admin/users/changePassword";
 import { UserType } from "@/types/User.type";
 import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
+import Alert from "@/components/custom-ui/Alert";
+import { toast } from "react-toastify";
 
 const ChangePasswordDialog: React.FC<{
   open: boolean;
   onOpenChange: (open: boolean) => void
   user: UserType;
 }> = ({ open, onOpenChange, user }) => {
-  const { mutate } = useMutation({
-    mutationFn: changePassword
+  const { mutate, error, isError } = useMutation({
+    mutationFn: changePassword,
+    onSuccess: (data) => {
+      toast.success(data?.message || 'Password udpated')
+      onOpenChange(false)
+    }
   })
   const formRef = useRef<{ submit: () => void }>(null)
 
@@ -25,7 +31,9 @@ const ChangePasswordDialog: React.FC<{
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Change password</DialogTitle>
+          <DialogDescription>Set a strong password for the user</DialogDescription>
         </DialogHeader>
+        {isError && <Alert className="mb-0" severity="error">{error.message}</Alert>}
         <div>
           <p className="text-xs text-muted mb-1">User account</p>
           <p>{user.email}</p>
@@ -48,7 +56,8 @@ const ChangePasswordDialog: React.FC<{
           onSubmit={(data) => {
             mutate({
               userId: user.id,
-              password: data.password
+              password: data.password,
+              confirmPassword: data.confirmPassword
             })
           }}
           submitRef={formRef}
