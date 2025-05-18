@@ -28,14 +28,14 @@ const Page = () => {
         <GridItemOption
           title="Director's message"
           description="Message from the director"
-          trigger={<p>Manage director&apos;s message</p>}
+          trigger={<p>Director&apos;s message</p>}
         >
           <DirectorsMessageForm />
         </GridItemOption>
         <GridItemOption
           title="President's message"
           description="Message from the president"
-          trigger={<p>Manage president&apos;s message</p>}
+          trigger={<p>President&apos;s message</p>}
         >
           <PresidentsMessageForm />
         </GridItemOption>

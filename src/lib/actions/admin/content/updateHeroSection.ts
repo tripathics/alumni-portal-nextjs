@@ -2,39 +2,30 @@ import { AxiosError } from "axios";
 import axios from "@/config/axios/client.config";
 import getUploadUrlApi from "../../media/getUploadUrl";
 
-const updateHeroSection = async ({
-  title,
-  description,
-  hero_image = null,
-}: {
+type UpdateHeroProp = {
   title: string;
   description: string;
   hero_image: File | null;
-}): Promise<
+}
+
+type SubmitData = Omit<UpdateHeroProp, 'hero_image'> & { hero_image?: string }
+
+const updateHeroSection = async (data: UpdateHeroProp): Promise<
   | {
-      success: boolean;
-      message: string;
-    }
+    success: boolean;
+    message: string;
+  }
   | undefined
 > => {
   try {
-    const submitData: {
-      title: string;
-      description: string;
-      hero_image?: string;
-    } = { title, description };
+    const { hero_image, ...restData } = data
+    const submitData: SubmitData = restData;
     if (hero_image instanceof File) {
-      const urlRes = await getUploadUrlApi(
-        "hero",
-        hero_image.name,
-        hero_image.type,
-        hero_image.size
-      );
+      const { name, type, size } = hero_image
+      const urlRes = await getUploadUrlApi("hero", name, type, size);
       const { key, url } = urlRes;
       await axios.put(url, hero_image, {
-        headers: {
-          "Content-type": hero_image.type,
-        },
+        headers: { "Content-type": hero_image.type },
       });
       submitData.hero_image = key;
     }

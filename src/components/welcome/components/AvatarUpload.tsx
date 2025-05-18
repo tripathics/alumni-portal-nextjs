@@ -28,8 +28,8 @@ export const AvatarUpload: React.FC<{
   const fileUrl = file
     ? URL.createObjectURL(file)
     : user?.avatar
-    ? userAvatarUrl(user?.avatar)
-    : null;
+      ? userAvatarUrl(user?.avatar)
+      : null;
 
   useImperativeHandle(ref, () => ({
     submit: () => {
@@ -74,7 +74,7 @@ export const AvatarUpload: React.FC<{
                   "File size should be less than 2MB",
                 acceptedFormats: (file?: File | null) =>
                   !file ||
-                  ["image/jpeg"].includes(file?.type) ||
+                  ["image/jpeg", "image/jpg"].includes(file?.type) ||
                   "Only JPEG files are allowed",
               },
             }}
@@ -88,7 +88,7 @@ export const AvatarUpload: React.FC<{
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     field.onChange(e.target.files ? e.target.files[0] : null);
                   }}
-                  accept="image/*"
+                  accept="image/jpg,image/jpeg"
                 />
                 <PencilIcon className="text-palette-foreground-dark dark:text-palette-foreground h-4 w-4" />
               </label>

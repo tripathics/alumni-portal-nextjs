@@ -1,7 +1,7 @@
 import axios from "@/config/axios/client.config";
 import { AxiosError } from "axios";
 
-type MediaCategoryType = "avatar" | "sign" | "post" | "hero";
+type MediaCategoryType = "avatar" | "sign" | "post" | "hero" | "director" | "president";
 
 const getUploadUrlApi = async (
   type: MediaCategoryType,

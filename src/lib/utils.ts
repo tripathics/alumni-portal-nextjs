@@ -12,6 +12,10 @@ export function userAvatarUrl(avatar: string) {
   return `${process.env.NEXT_PUBLIC_API_URL}/media/${avatar}`;
 }
 
+export function mediaUrl(key: string) {
+  return `${process.env.NEXT_PUBLIC_API_URL}/media/${key}`;
+}
+
 export function signUrl(sign: string) {
   return `${process.env.NEXT_PUBLIC_API_URL}/media/${sign}`;
 }

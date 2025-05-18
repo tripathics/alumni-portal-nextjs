@@ -29,20 +29,14 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
     if (!file) {
       return true;
     }
-    if (
-      !["image/webp", "image/png", "image/jpeg", "image/jpg"].includes(
-        file.type
-      )
-    ) {
+    if (!["image/jpeg", "image/jpg"].includes(file.type)) {
       return "Inavalid file format";
     }
     return true;
   };
 
   const checkFileSize = (file: File): string | true => {
-    if (!file) {
-      return true;
-    }
+    if (!file) return true;
     const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
     const minFileSize = 10 * 1024; // 10kB in bytes
     if (file.size > maxFileSize) {

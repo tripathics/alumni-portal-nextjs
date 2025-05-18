@@ -4,7 +4,15 @@ import FeaturedPost from "./components/FeaturedPost";
 import createServerAxiosInstance from "@/config/axios/server.config";
 import { heroImageUrl } from "@/lib/utils";
 
-const featuredPosts = [
+type PostType = {
+  title: string;
+  description: string;
+  image: string;
+  created_at: string;
+  links: { title: string, url: string }[];
+}
+
+const featuredPosts: PostType[] = [
   {
     title: "Message from Director",
     description:

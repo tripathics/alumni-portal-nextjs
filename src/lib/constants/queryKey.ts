@@ -10,4 +10,5 @@ export const queryKey = {
   heroSection: "hero-section",
   alumniList: "alumni-list",
   usersList: "users-list",
+  messages: "messages",
 };

@@ -8,6 +8,7 @@ import { SchemaField } from "./Schema.type";
 import FormSectionHeading from "../FormSectionHeading";
 import Image from "next/image";
 import { Ref, useImperativeHandle } from "react";
+import FieldWrapper from "../FieldWrapper";
 
 interface SchemaFormProps {
   schema: SchemaField[];
@@ -149,32 +150,28 @@ const SchemaForm: React.FC<SchemaFormProps> = ({
             />
           );
         } else if (field.type === "file") {
-          const file = watch(field.name);
+          const files = watch(field.name);
+          const values = Array.isArray(files) ? files : []
 
           return (
-            <div key={index} className="mt-6 mb-10 first:mt-3">
-              {Array.isArray(file) && file.length > 0 && (
-                <div className="flex gap-4 w-full flex-wrap mb-4">
-                  {file.map((f, _) => (
-                    <div
-                      style={{
-                        maxWidth: field.maxFileSize
-                          ? `${field.maxFileSize / 1024}px`
-                          : undefined,
-                      }}
-                      key={_}
-                    >
+            <FieldWrapper key={index}>
+              {values.map((val, i) => (
+                <div
+                  className="relative w-full h-72 flex mb-4 justify-start"
+                  key={`${index}-${i}`}
+                >
+                  {val instanceof File && (
+                    field.allowedFormats.every(f => f.includes('image')) ? (
                       <Image
-                        width={0}
-                        height={0}
-                        className="w-full h-auto"
-                        src={URL.createObjectURL(f)}
-                        alt={f.name}
+                        fill
+                        objectFit="contain"
+                        src={URL.createObjectURL(val)}
+                        alt={field.name}
                       />
-                    </div>
-                  ))}
+                    ) : <div className="m-4">{val.name}</div>
+                  )}
                 </div>
-              )}
+              ))}
               <FileInput
                 name={field.name}
                 label={field.label}
@@ -187,8 +184,8 @@ const SchemaForm: React.FC<SchemaFormProps> = ({
                 minFileSize={field.minFileSize}
                 allowedFormats={field.allowedFormats}
               />
-            </div>
-          );
+            </FieldWrapper>
+          )
         } else if (field.type === "section") {
           return <FormSectionHeading label={field.label} key={index} />;
         } else {
