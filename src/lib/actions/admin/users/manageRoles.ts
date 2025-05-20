@@ -8,17 +8,11 @@ export type ManageRolePayload = {
 }
 export type ManageRoleResponse = {
   message: string;
-  updatedUser: any;
+  updatedUser: boolean;
 } | undefined;
 
-export const assignRoles = async (data: {
-  userId: string,
-  roles: UserRole[]
-}): Promise<{
-  message: string;
-  updatedUser: any;
-} | undefined
-> => {
+export const assignRoles = async (data: ManageRolePayload):
+  Promise<ManageRoleResponse> => {
   try {
     const response = await axios.request({
       method: "PATCH",
@@ -34,14 +28,8 @@ export const assignRoles = async (data: {
   }
 };
 
-export const revokeRoles = async (data: {
-  userId: string,
-  roles: UserRole[]
-}): Promise<{
-  message: string;
-  updatedUser: any;
-} | undefined
-> => {
+export const revokeRoles = async (data: ManageRolePayload):
+  Promise<ManageRoleResponse> => {
   try {
     const response = await axios.request({
       method: "PATCH",

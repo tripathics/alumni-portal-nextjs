@@ -2,7 +2,6 @@
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { Spinner } from "@/components/ui/spinner";
-import useSessionEnabledQuery from "@/hooks/queries/useUserEnabledQuery";
 import useApplications from "@/hooks/queries/useApplications";
 
 export default function Applications() {
