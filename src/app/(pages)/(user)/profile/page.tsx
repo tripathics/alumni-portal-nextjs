@@ -311,7 +311,7 @@ const Page = () => {
                 <TableCell>
                   {profile.github ? (
                     <a className="link" href={profile.github} target="_blank">
-                      {profile.linkedin}
+                      {profile.github}
                     </a>
                   ) : (
                     "N/A"

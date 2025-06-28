@@ -44,7 +44,7 @@ const Login = () => {
     return () => {
       login.reset()
     }
-  }, [login])
+  }, []);
 
   return (
     <div className="container">
